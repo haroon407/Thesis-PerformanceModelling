@@ -5,73 +5,14 @@
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
+const DummyData = require('./dummy-data');
+const ComplexityFunctions = require('./complexityFunctions');
 
 class FabCar extends Contract {
 
-    async initLedger(ctx) { 
+    async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
-        const cars = [
-            {
-                color: 'blue',
-                make: 'Toyota',
-                model: 'Prius',
-                owner: 'Tomoko',
-            },
-            {
-                color: 'red',
-                make: 'Ford',
-                model: 'Mustang',
-                owner: 'Brad',
-            },
-            {
-                color: 'green',
-                make: 'Hyundai',
-                model: 'Tucson',
-                owner: 'Jin Soo',
-            },
-            {
-                color: 'yellow',
-                make: 'Volkswagen',
-                model: 'Passat',
-                owner: 'Max',
-            },
-            {
-                color: 'black',
-                make: 'Tesla',
-                model: 'S',
-                owner: 'Adriana',
-            },
-            {
-                color: 'purple',
-                make: 'Peugeot',
-                model: '205',
-                owner: 'Michel',
-            },
-            {
-                color: 'white',
-                make: 'Chery',
-                model: 'S22L',
-                owner: 'Aarav',
-            },
-            {
-                color: 'violet',
-                make: 'Fiat',
-                model: 'Punto',
-                owner: 'Pari',
-            },
-            {
-                color: 'indigo',
-                make: 'Tata',
-                model: 'Nano',
-                owner: 'Valeria',
-            },
-            {
-                color: 'brown',
-                make: 'Holden',
-                model: 'Barina',
-                owner: 'Shotaro',
-            },
-        ];
+        const cars = DummyData.cars;
 
         for (let i = 0; i < cars.length; i++) {
             cars[i].docType = 'car';
@@ -79,7 +20,7 @@ class FabCar extends Contract {
             console.info('Added <--> ', cars[i]);
         }
         console.info('============= END : Initialize Ledger ===========');
-    
+
     }
 
     async queryCar(ctx, carNumber) {
@@ -93,9 +34,21 @@ class FabCar extends Contract {
 
     async createCar(ctx, carNumber, make, model, color, owner) {
         console.info('============= START : Create Car ===========');
-        console.info('Wait start');
-        await this.sleep(5000);
-        console.info('Wait end');
+        // console.info('findIndex start');
+        // let x = await ComplexityFunctions.findIndex();
+        // console.info('findIndex end: ' + x);
+        // console.info('mergeSort start');
+        // let j = await ComplexityFunctions.mergeSort(DummyData.numbers100);
+        // console.info('mergeSort end: ' + JSON.stringify(j));
+        // console.info('binary search start');
+        // let k = await ComplexityFunctions.binarySearch(DummyData.numbers100.sort(function (a, b) { return a - b }), 5614);
+        // console.info('binary search end: ' + JSON.stringify(k));
+        // console.info('powerset start');
+        // let r = await ComplexityFunctions.powerset('abcdefg');
+        // console.info('powerset end: ' + JSON.stringify(r));
+        console.info('getPermutations start');
+        let g = await ComplexityFunctions.getPermutations('abcde');
+        console.info('getPermutations end: ' + JSON.stringify(g));
 
         const car = {
             color,
@@ -157,7 +110,7 @@ class FabCar extends Contract {
 
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
-      }
+    }
 
 }
 
