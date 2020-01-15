@@ -14,7 +14,7 @@ class ComplexityFunctions {
 
     // Function with O(1) complexity (indent=shift+opt+F)
     async getLastElement() {
-        let list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        let list = DummyData.alphabetList;
         return list[list.length - 1];
     }
 
