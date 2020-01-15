@@ -173,4 +173,46 @@ public final class ComplexityFunctions {
         System.out.println();
     }
 
+    /**
+     * complexity O(2^n)
+     */
+    public void powerset(String input) {
+        // For test
+        // powerset("abcdef");
+        for (int i = 1; i < (int) Math.pow(2, input.length()); i++) {
+
+            String element = "";
+            int arrayindex = 0;
+
+            for (int k = input.length() - 1; k >= 0; k--) {
+
+                String index = ((i >> k) & 1) == 1 ? "1" : "0";
+
+                if (index == "1") {
+                    element += input.charAt(arrayindex);
+                }
+                arrayindex++;
+            }
+            System.out.println(element);
+        }
+    }
+
+    /**
+     * complexity O(n!)
+     */
+    public void getPermutation(String prefix, String str) {
+        // For test
+        // permutation("", str);
+
+        int n = str.length();
+        if (n == 0) {
+            // Printing results
+            System.out.println(prefix);
+        } else {
+            for (int i = 0; i < n; i++) {
+                getPermutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i + 1, n));
+            }
+        }
+    }
+
 }
