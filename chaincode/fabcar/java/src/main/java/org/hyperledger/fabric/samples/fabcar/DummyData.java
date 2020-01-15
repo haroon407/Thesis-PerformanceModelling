@@ -4,7 +4,7 @@
  */
 
 package org.hyperledger.fabric.samples.fabcar;
-import java.util.Objects;
+// import java.util.Objects;
 
 public final class DummyData {
 
