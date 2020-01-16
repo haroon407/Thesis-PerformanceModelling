@@ -114,7 +114,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 		fmt.Println("Added", cars[i])
 		i = i + 1
 	}
-
+	TestAllFunctions()
 	return shim.Success(nil)
 }
 
