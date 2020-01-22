@@ -203,7 +203,7 @@ public final class ComplexityFunctions {
                 }
                 arrayindex++;
             }
-            System.out.println(element);
+            // System.out.println(element);
         }
     }
 
@@ -217,7 +217,7 @@ public final class ComplexityFunctions {
         int n = str.length();
         if (n == 0) {
             // Printing results
-            System.out.println(prefix);
+            // System.out.println(prefix);
         } else {
             for (int i = 0; i < n; i++) {
                 getPermutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i + 1, n));

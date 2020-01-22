@@ -213,7 +213,7 @@ public final class FabCarTest {
         when(ctx.getStub()).thenReturn(stub);
         when(stub.getStateByRange("CAR0", "CAR999")).thenReturn(new MockCarResultsIterator());
 
-        Car[] cars = contract.queryAllCars(ctx);
+        Car[] cars = contract.queryAllCars(ctx, 10, 1);
 
         final List<Car> expectedCars = new ArrayList<Car>();
         expectedCars.add(new Car("Toyota", "Prius", "blue", "Tomoko"));

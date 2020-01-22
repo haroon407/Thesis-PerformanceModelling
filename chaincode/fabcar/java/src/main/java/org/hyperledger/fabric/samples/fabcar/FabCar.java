@@ -6,6 +6,7 @@ package org.hyperledger.fabric.samples.fabcar;
 
 import java.util.ArrayList;
 import java.util.List;
+// import java.util.Random;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -183,40 +184,42 @@ public final class FabCar implements ContractInterface {
     public void getComplexityFunctionExecuted(int n, int option) {
         int[] arr;
         String set;
+        // arr = this.generateArray(n);
+        System.out.println("got actual n: " + n);
         switch (n) {
         case 10:
             arr = this.dummyData.getNumbers10();
-            set = this.dummyData.getString10();
+            set = this.dummyData.getString1();
             System.out.println("got n: 10");
             this.executeFunction(option, arr, set);
             break;
         case 100:
             arr = this.dummyData.getNumbers100();
-            set = this.dummyData.getString100();
+            set = this.dummyData.getString3();
             System.out.println("got n: 100");
             this.executeFunction(option, arr, set);
             break;
         case 200:
             arr = this.dummyData.getNumbers200();
-            set = this.dummyData.getString200();
+            set = this.dummyData.getString5();
             System.out.println("got n: 200");
             this.executeFunction(option, arr, set);
             break;
         case 500:
             arr = this.dummyData.getNumbers500();
-            set = this.dummyData.getString500();
+            set = this.dummyData.getString8();
             System.out.println("got n: 500");
             this.executeFunction(option, arr, set);
             break;
         case 1000:
             arr = this.dummyData.getNumbers1000();
-            set = this.dummyData.getString1000();
+            set = this.dummyData.getString10();
             System.out.println("got n: 1000");
             this.executeFunction(option, arr, set);
             break;
         case 2500:
             arr = this.dummyData.getNumbers2500();
-            set = this.dummyData.getString2500();
+            set = this.dummyData.getString11();
             System.out.println("got n: 2500");
             this.executeFunction(option, arr, set);
             break;
@@ -252,7 +255,10 @@ public final class FabCar implements ContractInterface {
             System.out.println("got option: O(nlog(n))");
             break;
         case 6:
+            long startTime2 = System.currentTimeMillis();
             this.complexityFunctions.powerset(set);
+            long endTime2 = System.currentTimeMillis();
+            System.out.println("Powerset took " + (endTime2 - startTime2) + " milliseconds");
             System.out.println("got option: O(2^n)");
             break;
         case 7:
@@ -263,4 +269,14 @@ public final class FabCar implements ContractInterface {
             break;
         }
     }
+
+    // public int[] generateArray(int n) {
+    //     Random rd = new Random(); // creating Random object
+    //     int[] arr = new int[n];
+    //     for (int i = 0; i < arr.length; i++) {
+    //         arr[i] = rd.nextInt((500000 - 0) + 1) + 0; // storing random integers in an array
+    //         // System.out.println(arr[i]); // printing each array element
+    //     }
+    //     return arr;
+    // }
 }
