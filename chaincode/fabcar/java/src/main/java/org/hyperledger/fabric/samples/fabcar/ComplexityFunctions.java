@@ -17,19 +17,18 @@ public final class ComplexityFunctions {
     /**
      * complexity O(1)
      */
-    public char getLastElement() {
-        char[] list = this.dummyData.getAlphabetList();
+    public int getLastElement(int[] list) {
         return list[list.length - 1];
     }
 
     /**
      * complexity O(n)
      */
-    public int findIndex() {
-        int[] list = this.dummyData.getNumbers15();
-        int max = 31;
-        int min = 9130;
-        int match = (int) ((Math.random() * ((max - min) + 1)) + min);
+    public int findIndex(int[] list) {
+        int min = 0;
+        int max = 1000;
+        // int match = (int) ((Math.random() * ((max - min) + 1)) + min);
+        int match = 1503;
         System.out.println("Searching: " + match);
         for (int i = 0, total = list.length; i < total; i++) {
             if (list[i] == match) {
@@ -42,7 +41,7 @@ public final class ComplexityFunctions {
     /**
      * complexity O(n^2)
      */
-    public int[][] buildSquareMatrix() {
+    public int[][] buildSquareMatrix(int[] list) {
         // to test
         // int[][] x = buildSquareMatrix();
         // for(int i = 0 ; i < x.length ; i++){
@@ -50,8 +49,9 @@ public final class ComplexityFunctions {
         // System.out.println(x[i][j]);
         // }
         // }
-        int[] list = this.dummyData.getNumbers15();
-        int[][] matrix = new int[15][15];
+        int length = list.length;
+        // int[] list = this.dummyData.getNumbers15();
+        int[][] matrix = new int[length][length];
         for (int i = 0, total = list.length; i < total; i++) {
             for (int j = 0, total2 = list.length; j < total2; j++) {
                 matrix[i][j] = list[j];
@@ -63,7 +63,7 @@ public final class ComplexityFunctions {
     /**
      * complexity O(log(n))
      */
-    public int binarySearch(final int[] arr, final int x) {
+    public int binarySearch(final int[] arr) {
         // to test (sorted)
         // int arr[] =
         // {31,695,708,802,894,1326,1616,1927,2278,3821,4290,4681,5746,7828,9130};
@@ -71,6 +71,7 @@ public final class ComplexityFunctions {
         // int x = 4681;
         // int result = binarySearch(arr, x);
         // System.out.println("got: " + result);
+        final int x = 1503;
         int l = 0;
         int r = arr.length - 1;
         while (l <= r) {

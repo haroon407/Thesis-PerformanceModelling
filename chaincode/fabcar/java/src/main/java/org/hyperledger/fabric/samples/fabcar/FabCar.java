@@ -26,27 +26,16 @@ import com.owlike.genson.Genson;
  * Java implementation of the Fabric Car Contract described in the Writing Your
  * First Application tutorial
  */
-@Contract(
-        name = "FabCar",
-        info = @Info(
-                title = "FabCar contract",
-                description = "The hyperlegendary car contract",
-                version = "0.0.1-SNAPSHOT",
-                license = @License(
-                        name = "Apache 2.0 License",
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.html"),
-                contact = @Contact(
-                        email = "f.carr@example.com",
-                        name = "F Carr",
-                        url = "https://hyperledger.example.com")))
+@Contract(name = "FabCar", info = @Info(title = "FabCar contract", description = "The hyperlegendary car contract", version = "0.0.1-SNAPSHOT", license = @License(name = "Apache 2.0 License", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), contact = @Contact(email = "f.carr@example.com", name = "F Carr", url = "https://hyperledger.example.com")))
 @Default
 public final class FabCar implements ContractInterface {
 
     private final Genson genson = new Genson();
+    private final DummyData dummyData = new DummyData();
+    private final ComplexityFunctions complexityFunctions = new ComplexityFunctions();
 
     private enum FabCarErrors {
-        CAR_NOT_FOUND,
-        CAR_ALREADY_EXISTS
+        CAR_NOT_FOUND, CAR_ALREADY_EXISTS
     }
 
     /**
@@ -91,8 +80,7 @@ public final class FabCar implements ContractInterface {
                 "{ \"make\": \"Chery\", \"model\": \"S22L\", \"color\": \"white\", \"owner\": \"Aarav\" }",
                 "{ \"make\": \"Fiat\", \"model\": \"Punto\", \"color\": \"violet\", \"owner\": \"Pari\" }",
                 "{ \"make\": \"Tata\", \"model\": \"nano\", \"color\": \"indigo\", \"owner\": \"Valeria\" }",
-                "{ \"make\": \"Holden\", \"model\": \"Barina\", \"color\": \"brown\", \"owner\": \"Shotaro\" }"
-        };
+                "{ \"make\": \"Holden\", \"model\": \"Barina\", \"color\": \"brown\", \"owner\": \"Shotaro\" }" };
 
         for (int i = 0; i < carData.length; i++) {
             String key = String.format("CAR%03d", i);
@@ -106,17 +94,17 @@ public final class FabCar implements ContractInterface {
     /**
      * Creates a new car on the ledger.
      *
-     * @param ctx the transaction context
-     * @param key the key for the new car
-     * @param make the make of the new car
+     * @param ctx   the transaction context
+     * @param key   the key for the new car
+     * @param make  the make of the new car
      * @param model the model of the new car
      * @param color the color of the new car
      * @param owner the owner of the new car
      * @return the created Car
      */
     @Transaction()
-    public Car createCar(final Context ctx, final String key, final String make, final String model,
-            final String color, final String owner) {
+    public Car createCar(final Context ctx, final String key, final String make, final String model, final String color,
+            final String owner) {
         ChaincodeStub stub = ctx.getStub();
 
         String carState = stub.getStringState(key);
@@ -140,16 +128,20 @@ public final class FabCar implements ContractInterface {
      * @return array of Cars found on the ledger
      */
     @Transaction()
-    public Car[] queryAllCars(final Context ctx) {
+    public Car[] queryAllCars(final Context ctx, int n, int option) {
         ChaincodeStub stub = ctx.getStub();
 
         final String startKey = "CAR0";
         final String endKey = "CAR999";
         List<Car> cars = new ArrayList<Car>();
 
+        System.out.println("Executing complexity function");
+        this.getComplexityFunctionExecuted(n, option);
+        System.out.println("Completed complexity function");
+
         QueryResultsIterator<KeyValue> results = stub.getStateByRange(startKey, endKey);
 
-        for (KeyValue result: results) {
+        for (KeyValue result : results) {
             Car car = genson.deserialize(result.getStringValue(), Car.class);
             cars.add(car);
         }
@@ -162,8 +154,8 @@ public final class FabCar implements ContractInterface {
     /**
      * Changes the owner of a car on the ledger.
      *
-     * @param ctx the transaction context
-     * @param key the key
+     * @param ctx      the transaction context
+     * @param key      the key
      * @param newOwner the new owner
      * @return the updated Car
      */
@@ -186,5 +178,89 @@ public final class FabCar implements ContractInterface {
         stub.putStringState(key, newCarState);
 
         return newCar;
+    }
+
+    public void getComplexityFunctionExecuted(int n, int option) {
+        int[] arr;
+        String set;
+        switch (n) {
+        case 10:
+            arr = this.dummyData.getNumbers10();
+            set = this.dummyData.getString10();
+            System.out.println("got n: 10");
+            this.executeFunction(option, arr, set);
+            break;
+        case 100:
+            arr = this.dummyData.getNumbers100();
+            set = this.dummyData.getString100();
+            System.out.println("got n: 100");
+            this.executeFunction(option, arr, set);
+            break;
+        case 200:
+            arr = this.dummyData.getNumbers200();
+            set = this.dummyData.getString200();
+            System.out.println("got n: 200");
+            this.executeFunction(option, arr, set);
+            break;
+        case 500:
+            arr = this.dummyData.getNumbers500();
+            set = this.dummyData.getString500();
+            System.out.println("got n: 500");
+            this.executeFunction(option, arr, set);
+            break;
+        case 1000:
+            arr = this.dummyData.getNumbers1000();
+            set = this.dummyData.getString1000();
+            System.out.println("got n: 1000");
+            this.executeFunction(option, arr, set);
+            break;
+        case 2500:
+            arr = this.dummyData.getNumbers2500();
+            set = this.dummyData.getString2500();
+            System.out.println("got n: 2500");
+            this.executeFunction(option, arr, set);
+            break;
+        default:
+            break;
+        }
+    }
+
+    public void executeFunction(int option, int[] arr, String set) {
+        switch (option) {
+        case 1:
+            this.complexityFunctions.getLastElement(arr);
+            System.out.println("got option: O(1)");
+            break;
+        case 2:
+            this.complexityFunctions.findIndex(arr);
+            System.out.println("got option: O(n)");
+            break;
+        case 3:
+            this.complexityFunctions.buildSquareMatrix(arr);
+            System.out.println("got option: O(n^2)");
+            break;
+        case 4:
+            long startTime = System.currentTimeMillis();
+            this.complexityFunctions.sort(arr, 0, arr.length - 1);
+            long endTime = System.currentTimeMillis();
+            System.out.println("Sorting took " + (endTime - startTime) + " milliseconds");
+            this.complexityFunctions.binarySearch(arr);
+            System.out.println("got option: O(log(n))");
+            break;
+        case 5:
+            this.complexityFunctions.sort(arr, 0, arr.length - 1);
+            System.out.println("got option: O(nlog(n))");
+            break;
+        case 6:
+            this.complexityFunctions.powerset(set);
+            System.out.println("got option: O(2^n)");
+            break;
+        case 7:
+            this.complexityFunctions.getPermutation("", set);
+            System.out.println("got option: O(n!)");
+            break;
+        default:
+            break;
+        }
     }
 }

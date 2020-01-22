@@ -14,6 +14,9 @@ public final class DummyData {
     // length 15
     private final int[] numbers15;
 
+    // length 10
+    private final int[] numbers10;
+
     // length 100
     private final int[] numbers100;
 
@@ -29,12 +32,34 @@ public final class DummyData {
     // length 2500
     private final int[] numbers2500;
 
+    // length 10
+    private final String string10;
+
+    // length 100
+    private final String string100;
+
+    // length 200
+    private final String string200;
+
+    // length 500
+    private final String string500;
+
+    // length 1000
+    private final String string1000;
+
+    // length 2500
+    private final String string2500;
+
     public char[] getAlphabetList() {
         return alphabetList;
     }
 
     public int[] getNumbers15() {
         return numbers15;
+    }
+
+    public int[] getNumbers10() {
+        return numbers10;
     }
 
     public int[] getNumbers100() {
@@ -57,11 +82,36 @@ public final class DummyData {
         return numbers2500;
     }
 
+    public String getString10() {
+        return string10;
+    }
+
+    public String getString100() {
+        return string100;
+    }
+
+    public String getString200() {
+        return string200;
+    }
+
+    public String getString500() {
+        return string500;
+    }
+
+    public String getString1000() {
+        return string1000;
+    }
+
+    public String getString2500() {
+        return string2500;
+    }
+
     public DummyData() {
         this.alphabetList = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
                 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
         this.numbers15 = new int[] { 802, 894, 4681, 2278, 695, 5746, 9130, 1326, 708, 1927, 31, 4290, 1616, 7828,
                 3821 };
+        this.numbers10 = new int[] { 802, 894, 4681, 2278, 695, 5746, 9130, 1326, 708, 1927 };
         this.numbers100 = new int[] { 802, 894, 4681, 2278, 695, 5746, 9130, 1326, 708, 1927, 31, 4290, 1616, 7828,
                 3821, 9381, 2389, 2775, 9365, 7350, 7245, 4623, 4350, 3222, 2492, 9151, 3272, 7768, 3684, 6782, 2078,
                 4731, 6733, 368, 8934, 6759, 5787, 1591, 9973, 3033, 7759, 8027, 1121, 4075, 4786, 2179, 9978, 3777,
@@ -311,5 +361,11 @@ public final class DummyData {
                 4455, 3288, 2531, 3495, 2014, 3178, 1871, 3765, 1417, 4364, 2651, 924, 43, 2320, 3041, 1294, 653, 2530,
                 3359, 4475, 2226, 3035, 1146, 1155, 3453, 1038, 910, 3075, 3577, 3747, 1045, 135, 577, 3950, 1253, 3672,
                 1924, 1884, 3176, 3037, 4115, 3961, 1042, 4258, 129, 623, 3587, 4025, 4566, 4276, 1320, 2127, 1503 };
+        this.string10 = "s8ZQxRDi8l";
+        this.string100 = "jIi38hIGjCzVTV1fOfGoqzRUPCoH6IA9UIlpv6Cj9vuPHfhRvlesYBRnj9ZpJkxRhQlovxxNfkf7a4C3zdYPZSJDD3WVpsVZLqKC";
+        this.string200 = "nvG9SegWDeHxTeQEEr2A32R84LcJGWR5pRWvr9RpXHZTNe1NkpvtHOZT4VA1yam6WWnFzkPhdCg62VNVan0AiBlgYW52IUJui8HOpF0yNKMGNUXlLT09ej0ZV2L4aHcVpwl2waAi6hH8rVINShRKvAkLpCgtoJMHXXVZzjjlC5AkyxgLCodatE3Z3kcMhNLjiY3gUY63";
+        this.string500 = "rGpBal4liMLbb5qInyWoe1dcbmlfSuHEt4XYE2J1fTwgbWy31fjhUCgpIJsv5AzmsgFs7etCUd9naNqhqcu45w38iwL4Uo3rAKf7kvJWFNrigZ4BGiVPGfY49wOq5ElzIuED3X6sEl8Z4GJqTluCCNBK4PPLhEuhJ6oFzj844zBck6lMTjPtae7y4qHCl2pT23rgGGhpQ28cnkCP53js8Pj2xUalPmQNig2wTO6KqjyDyuKjMwOZdkaemBUQVUkb3cqI0wWFBQsAngVn0T5kPEQ1hvQkCfhTC5aL8uqZulvJnq9YgYJOL4i6YpWU5qMbchhFlTDcXJ6Qr7R1Ov8Brco4wWawaLVlOlZjb02et93QZ9DIy0eN6ZErYbPdgPCig96MpxicVlfQPIXV1QLJv7b0tUY6sOuKbRcmXM9q6sVOhcrLQqugptTBYIQO2oPcFiJ180yJfJufxqHBOupcaEp5ZgaMAWQH9Ci2P95Xy8zjGid7SOtm";
+        this.string1000 = "kINZuNZr9xwwKiC2SREXB1qxYmJLwaiNjoweiZMACXfHRZFs8YwlXCg1jIcYhtMsBxeNrx7zsH54w2vFlpRvkhPNPjBPAjdcLG7b42CTsc4Z9K3CRGJMWPgSFMTGPsEsFLvwrnPVKdOw3wXao6bem5dnNWNqIvzuB6iRXaw6EqLfOYsYrVrODTyFqE87G5e7Tk5pJhazV2C9ZD9kkFRFhrllcXp7LvugR8zuVxOQ5OwtQ6XaVvHOGIAouMJmYbTFKG2O1RWyfG5GdZqjmtQ5ASGpe96SFbRm5t1Qh0w9qB4ojJNIuaTIh7bDyyrnldsDFy3bnM4JJN0hCvpmhIHzNgpTZ4JiXijXEIgT7FRMyXoJu4kzs8WlpJXx6SGt3mSGcNqmr1ri21z5BwflqY6at5poqDxaaSn81WPYQkIBjRWzhXn5yqPQg366cLYrPw642CLB1s8QBwOJSqoISOctBKNE2H24rYvRSHdvSpuCKyoWZeR3siJeckoYNKLskW6s8fqGo7acqjbL3lGecmPQ2AcUeMN2Vo5v3wxPIR3R3B1hwtUNgU3ZMwhNf5TOhCgezrwcnt4f34kwrqOCoZVQHUBRrcpc5blNyGFCSjNqXcdqQGRpNno60Yqanm75SPKzroWuSXIkN5UO8V0RlsJl2xP2H6tMnkOziw64yxrbLmImgfKphMFJwXr0x8qXT2669rLvfxLkbl6K9NLSTWgfJ29HbWBrx5EhTnYA08S74mL9F05P0dtVfYZkCmyzyeBK45ET7UnWqNosLdMq4WheFbsXm7Xzc7qOffriqBlcnY16IZxVzJnK5iENHm6ZKx4OXGvjPPbguUvAPRrHjyUMcHgXGCaqLYrRp2A5626lge0jp6d8z9I9Pb1B3vh3r5C21YEfn5QatMgxsQnP45A6KLZGDyBbmyPB5LNvqGS8WBgUct8G8AQZN9z5FQU9slNnQAiiOxVPrgIB7PnUFgBZcS0gxXpAHaEQu3L9nx55";
+        this.string2500 = "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";
     }
 }
