@@ -74,7 +74,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	} else if function == "createCar" {
 		return s.createCar(APIstub, args)
 	} else if function == "queryAllCars" {
-		return s.queryAllCars(APIstub, "10", "1")
+		return s.queryAllCars(APIstub, args[0], args[1])
 	} else if function == "changeCarOwner" {
 		return s.changeCarOwner(APIstub, args)
 	}
@@ -146,6 +146,52 @@ func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface, n stri
 	fmt.Println("GOT n", n)
 	fmt.Println("GOT option", option)
 	GetComplexityFunctionExecuted(n, option)
+	// buffer is a JSON array containing QueryResults
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		queryResponse, err := resultsIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"Record\":")
+		// Record is a JSON object, so we write as-is
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+
+	fmt.Printf("- queryAllCars:\n%s\n", buffer.String())
+
+	return shim.Success(buffer.Bytes())
+}
+
+func (s *SmartContract) queryAllCars2(APIstub shim.ChaincodeStubInterface, n string, option string) sc.Response {
+
+	startKey := "CAR0"
+	endKey := "CAR999"
+
+	resultsIterator, err := APIstub.GetStateByRange(startKey, endKey)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	defer resultsIterator.Close()
+	// Executing the complexity function
+	fmt.Println("GOT n", n)
+	fmt.Println("GOT option", option)
+	GetComplexityFunctionExecuted("100", "2")
 	// buffer is a JSON array containing QueryResults
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
