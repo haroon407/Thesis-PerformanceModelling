@@ -18,8 +18,8 @@ import (
 /*
  * Complexity O(1)
  */
-func GetLastElement() string {
-	return AlphabetList[len(AlphabetList)-1]
+func GetLastElement(a []int) int {
+	return a[len(a)-1]
 }
 
 /*
@@ -38,8 +38,8 @@ func FindIndex(a []int, x int) int {
 /*
  * Complexity O(n^2)
  */
-func BuildSquareMatrix() [][]int {
-	dim := 12
+func BuildSquareMatrix(dim int) [][]int {
+	// dim := 12
 	matrix := make([][]int, dim) // dim*dim matrix
 	for i := range matrix {
 		matrix[i] = make([]int, dim)
@@ -168,9 +168,9 @@ func permutations(testStr string) []string {
  * Runs all complexity functions
  */
 func TestAllFunctions() {
-	var result string = GetLastElement()
+	var result int = GetLastElement(Numbers15)
 	var result2 int = FindIndex(Numbers15, 1927)
-	var result3 [][]int = BuildSquareMatrix()
+	var result3 [][]int = BuildSquareMatrix(12)
 	var result4 int = BinarySearch(Numbers15, 9130)
 	var result5 []int = MergeSort(Numbers100)
 	var result6 = PowerSet([]string{"one", "two", "three", "four", "five"})

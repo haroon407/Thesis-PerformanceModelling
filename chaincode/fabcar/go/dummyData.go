@@ -273,3 +273,17 @@ var Numbers2500 = []int{3107, 4180, 4499, 3313, 3904, 513, 1296, 1219, 3812, 154
 	4455, 3288, 2531, 3495, 2014, 3178, 1871, 3765, 1417, 4364, 2651, 924, 43, 2320, 3041, 1294, 653, 2530,
 	3359, 4475, 2226, 3035, 1146, 1155, 3453, 1038, 910, 3075, 3577, 3747, 1045, 135, 577, 3950, 1253, 3672,
 	1924, 1884, 3176, 3037, 4115, 3961, 1042, 4258, 129, 623, 3587, 4025, 4566, 4276, 1320, 2127, 1503}
+
+var String1 string = "v"            //1
+var String3 string = "wqQ"          //3
+var String5 string = "VE6bQ"        //5
+var String8 string = "QrGxmViQ"     //8
+var String10 string = "4rm9bLB56r"  //10
+var String11 string = "7Gl4bQB23ef" //11
+
+var String1Arr = []string{"v"}
+var String3Arr = []string{"w", "q", "Q"}
+var String5Arr = []string{"V", "E", "6", "b", "Q"}
+var String8Arr = []string{"Q", "r", "G", "x", "m", "V", "i", "Q"}
+var String10Arr = []string{"4", "r", "m", "9", "b", "L", "B", "5", "6", "r"}
+var String11Arr = []string{"7", "G", "l", "4", "b", "Q", "B", "2", "3", "e", "f"}

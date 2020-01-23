@@ -74,7 +74,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	} else if function == "createCar" {
 		return s.createCar(APIstub, args)
 	} else if function == "queryAllCars" {
-		return s.queryAllCars(APIstub)
+		return s.queryAllCars(APIstub, "10", "1")
 	} else if function == "changeCarOwner" {
 		return s.changeCarOwner(APIstub, args)
 	}
@@ -114,7 +114,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 		fmt.Println("Added", cars[i])
 		i = i + 1
 	}
-	TestAllFunctions()
+
 	return shim.Success(nil)
 }
 
@@ -132,7 +132,7 @@ func (s *SmartContract) createCar(APIstub shim.ChaincodeStubInterface, args []st
 	return shim.Success(nil)
 }
 
-func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface) sc.Response {
+func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface, n string, option string) sc.Response {
 
 	startKey := "CAR0"
 	endKey := "CAR999"
@@ -142,7 +142,10 @@ func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface) sc.Res
 		return shim.Error(err.Error())
 	}
 	defer resultsIterator.Close()
-
+	// Executing the complexity function
+	fmt.Println("GOT n", n)
+	fmt.Println("GOT option", option)
+	GetComplexityFunctionExecuted(n, option)
 	// buffer is a JSON array containing QueryResults
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
@@ -200,5 +203,61 @@ func main() {
 	err := shim.Start(new(SmartContract))
 	if err != nil {
 		fmt.Printf("Error creating new Smart Contract: %s", err)
+	}
+}
+
+func GetComplexityFunctionExecuted(n string, option string) {
+	switch n {
+	case "10":
+		fmt.Println("got n: 10 / 1")
+		ExecuteFunction(option, Numbers10, String1, String1Arr)
+	case "100":
+		fmt.Println("got n: 100 / 2")
+		ExecuteFunction(option, Numbers100, String3, String3Arr)
+	case "200":
+		fmt.Println("got n: 200 / 5")
+		ExecuteFunction(option, Numbers200, String5, String5Arr)
+	case "500":
+		fmt.Println("got n: 500 / 8")
+		ExecuteFunction(option, Numbers500, String8, String8Arr)
+	case "1000":
+		fmt.Println("got n: 1000 / 10")
+		ExecuteFunction(option, Numbers1000, String10, String10Arr)
+	case "2500":
+		fmt.Println("got n: 2500 / 11")
+		ExecuteFunction(option, Numbers2500, String11, String11Arr)
+	}
+}
+
+func ExecuteFunction(option string, arr []int, set string, setArr []string) {
+	switch option {
+	case "1":
+		fmt.Println("got option: O(1)")
+		var result int = GetLastElement(arr)
+		fmt.Println("O(1) - ", result)
+	case "2":
+		fmt.Println("got option: O(n)")
+		var result2 int = FindIndex(arr, 1503)
+		fmt.Println("O(n) - ", result2)
+	case "3":
+		fmt.Println("got option: O(n^2)")
+		var result3 [][]int = BuildSquareMatrix(len(arr))
+		fmt.Println("O(n^2) - ", result3)
+	case "4":
+		fmt.Println("got option: O(logn)")
+		var result4 int = BinarySearch(arr, 1503)
+		fmt.Println("O(Log(n)) - ", result4)
+	case "5":
+		fmt.Println("got option: O(nlogn)")
+		var result5 []int = MergeSort(arr)
+		fmt.Println("O(nLog(n)) - ", result5)
+	case "6":
+		fmt.Println("got option: O(2^n)")
+		var result6 = PowerSet(setArr)
+		fmt.Println("O(2^n)", result6)
+	case "7":
+		fmt.Println("got option: O(n!)")
+		var result7 = permutations(set)
+		fmt.Println("O(n!)", result7)
 	}
 }
