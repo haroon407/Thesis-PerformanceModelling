@@ -13,16 +13,14 @@ class ComplexityFunctions {
     }
 
     // Function with O(1) complexity (indent=shift+opt+F)
-    async getLastElement() {
-        let list = DummyData.alphabetList;
+    async getLastElement(list) {
         return list[list.length - 1];
     }
 
     // Function with O(n) complexity
-    async findIndex() {
-        const list = DummyData.numbers100;
-        let match = Math.floor(Math.random() * 9999);
-        console.log('searching: ' + match);
+    async findIndex(list, match) {
+        // let match = Math.floor(Math.random() * 9999);
+        // console.log('searching: ' + match);
         for (let i = 0, total = list.length; i < total; i++) {
             if (list[i] === match)
                 return i;
@@ -31,10 +29,9 @@ class ComplexityFunctions {
     }
 
     // Function with O(n^2) complexity
-    async buildSquareMatrix() {
-        const list = DummyData.numbers100;
+    async buildSquareMatrix(list) {
         let matrix = [];
-        console.log('building: ' + matrix);
+        // console.log('building: ' + matrix);
         for (let i = 0, total = list.length; i < total; i++) {
             matrix[i] = [];
             for (let j = 0, total = list.length; j < total; j++)
@@ -84,7 +81,7 @@ class ComplexityFunctions {
         let middle = Math.floor(arr.length / 2)
         let left = arr.slice(0, middle)
         let right = arr.slice(middle)
-        console.log("lef, right, middle", left, right, middle);
+        // console.log("lef, right, middle", left, right, middle);
         let result = await this.merge(await this.mergeSort(left), await this.mergeSort(right))
         return result
     }
