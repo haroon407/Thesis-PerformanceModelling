@@ -287,23 +287,27 @@ func ExecuteFunction(option string, arr []int, set string, setArr []string) {
 		fmt.Println("O(n) - ", result2)
 	case "3":
 		fmt.Println("got option: O(n^2)")
-		var result3 [][]int = BuildSquareMatrix(len(arr))
-		fmt.Println("O(n^2) - ", result3)
+		// var result3 [][]int = BuildSquareMatrix(len(arr))
+		BuildSquareMatrix(len(arr))
+		fmt.Println("O(n^2)")
 	case "4":
 		fmt.Println("got option: O(logn)")
 		var result4 int = BinarySearch(arr, 1503)
 		fmt.Println("O(Log(n)) - ", result4)
 	case "5":
 		fmt.Println("got option: O(nlogn)")
-		var result5 []int = MergeSort(arr)
-		fmt.Println("O(nLog(n)) - ", result5)
+		// var result5 []int = MergeSort(arr)
+		MergeSort(arr)
+		fmt.Println("O(nLog(n))")
 	case "6":
 		fmt.Println("got option: O(2^n)")
-		var result6 = PowerSet(setArr)
-		fmt.Println("O(2^n)", result6)
+		// var result6 = PowerSet(setArr)
+		PowerSet(setArr)
+		fmt.Println("O(2^n)")
 	case "7":
 		fmt.Println("got option: O(n!)")
-		var result7 = permutations(set)
-		fmt.Println("O(n!)", result7)
+		// var result7 = permutations(set)
+		permutations(set)
+		fmt.Println("O(n!)")
 	}
 }
