@@ -113,14 +113,14 @@ export class FabCar extends Contract {
         const endKey = 'CAR999';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
-        this.getComplexityFunctionExecuted(n, option);
+        await this.getComplexityFunctionExecuted(n, option);
 
         const allResults = [];
         while (true) {
             const res = await iterator.next();
 
             if (res.value && res.value.value.toString()) {
-                console.log(res.value.value.toString('utf8'));
+                // console.log(res.value.value.toString('utf8'));
 
                 const Key = res.value.key;
                 let Record;
@@ -135,7 +135,7 @@ export class FabCar extends Contract {
             if (res.done) {
                 console.log('end of data');
                 await iterator.close();
-                console.info(allResults);
+                // console.info(allResults);
                 return JSON.stringify(allResults);
             }
         }
@@ -155,7 +155,7 @@ export class FabCar extends Contract {
         console.info('============= END : changeCarOwner ===========');
     }
 
-    public getComplexityFunctionExecuted(n, option) {
+    public async getComplexityFunctionExecuted(n, option) {
         let arr;
         let stringArr;
         switch (n) {
@@ -163,65 +163,75 @@ export class FabCar extends Contract {
                 console.log("got n: 10 / 1");
                 arr = this.dummyData.numbers10;
                 stringArr = this.dummyData.string1;
-                this.executeFunction(option, arr, stringArr);
+                await this.executeFunction(option, arr, stringArr);
+                break;
             case "100":
                 console.log("got n: 100 / 2");
                 arr = this.dummyData.numbers100;
                 stringArr = this.dummyData.string3;
-                this.executeFunction(option, arr, stringArr);
+                await this.executeFunction(option, arr, stringArr);
                 break;
             case "200":
                 console.log("got n: 200 / 5");
                 arr = this.dummyData.numbers200;
                 stringArr = this.dummyData.string5;
-                this.executeFunction(option, arr, stringArr);
+                await this.executeFunction(option, arr, stringArr);
                 break;
             case "500":
                 console.log("got n: 500 / 8");
                 arr = this.dummyData.numbers500;
                 stringArr = this.dummyData.string8;
-                this.executeFunction(option, arr, stringArr);
+                await this.executeFunction(option, arr, stringArr);
                 break;
             case "1000":
                 console.log("got n: 1000 / 10");
                 arr = this.dummyData.numbers1000;
                 stringArr = this.dummyData.string10;
-                this.executeFunction(option, arr, stringArr);
+                await this.executeFunction(option, arr, stringArr);
                 break;
             case "2500":
                 console.log("got n: 2500 / 11");
                 arr = this.dummyData.numbers2500;
                 stringArr = this.dummyData.string11;
-                this.executeFunction(option, arr, stringArr);
+                await this.executeFunction(option, arr, stringArr);
                 break;
             default:
                 break;
         }
     }
 
-    public executeFunction(option, arr, set) {
+    public async executeFunction(option, arr, set) {
         switch (option) {
             case "1":
-                let result = this.complexityFunctions.getLastElement(arr);
+                let result = await this.complexityFunctions.getLastElement(arr);
                 console.log("O(1) - ", result);
+                break;
             case "2":
-                let result2 = this.complexityFunctions.findIndex(arr, 1503);
-                console.log("O(n) - ", result2)
+                let result2 = await this.complexityFunctions.findIndex(arr, 1503);
+                console.log("O(n) - ", result2);
+                break;
             case "3":
                 this.complexityFunctions.buildSquareMatrix(arr);
-                console.log("O(n^2)")
+                console.log("O(n^2)");
+                break;
             case "4":
-                let result4 = this.complexityFunctions.binarySearch(arr, 1503);
+                let result4 = await this.complexityFunctions.binarySearch(arr.sort(function (a, b) { return a - b }), 1503, 0, arr.length - 1);
                 console.log("O(Log(n)) - ", result4);
+                break;
             case "5":
-                this.complexityFunctions.mergeSort(arr);
-                console.log("O(nLog(n))")
+                await this.complexityFunctions.mergeSort(arr);
+                console.log("O(nLog(n))");
+                break;
             case "6":
-                this.complexityFunctions.powerset(set);
+                await this.complexityFunctions.powerset(set);
                 console.log("O(2^n)");
+                break;
             case "7":
-                this.complexityFunctions.getPermutations(set);
-                console.log("O(n!)")
+                await this.complexityFunctions.getPermutations(set);
+                console.log("O(n!)");
+                break;
+            default:
+                break;
         }
     }
 

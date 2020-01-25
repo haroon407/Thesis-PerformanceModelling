@@ -37,20 +37,31 @@ export class ComplexityFunctions {
     }
 
     // Function with O(Log(n)) need to send in sorted arrays DummyData.numbers100.sort(function(a, b){return a - b})
-    async binarySearch(array: Array<any>, element: number, offset: number = 0) {
-        // split array in half
-        const half: number = array.length / 2;
-        const current = array[half];
+    binarySearch(arr, x, start, end) {
+        // Base Condition 
+        if (start > end) {
+            return false
+        };
 
-        if (current === element) {
-            return offset + half;
-        } else if (element > current) {
-            const right = array.slice(half);
-            return await this.binarySearch(right, element, offset + half);
-        } else {
-            const left = array.slice(0, half)
-            return await this.binarySearch(left, element, offset);
+        // Find the middle index 
+        let mid = Math.floor((start + end) / 2);
+
+        // Compare mid with given key x 
+        if (arr[mid] === x) {
+            return true
+        };
+
+        // If element at mid is greater than x, 
+        // search in the left half of mid 
+        if (arr[mid] > x) {
+            return this.binarySearch(arr, x, start, mid - 1);
         }
+        else {
+            // If element at mid is smaller than x, 
+            // search in the right half of mid 
+            return this.binarySearch(arr, x, mid + 1, end);
+        }
+
     }
 
     // Function with O(nLog(n)) complexity

@@ -41,7 +41,6 @@ class ComplexityFunctions {
     }
 
     // Function with O(Log(n)) need to send in sorted arrays DummyData.numbers100.sort(function(a, b){return a - b})
-    // async binarySearch(array, element, offset = 0) {
     binarySearch(arr, x, start, end) {
         // Base Condition 
         if (start > end) {
