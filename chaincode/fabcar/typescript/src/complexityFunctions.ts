@@ -2,23 +2,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-'use strict';
-
-const DummyData = require('./dummy-data');
-
-class ComplexityFunctions {
+export class ComplexityFunctions {
 
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     // Function with O(1) complexity (indent=shift+opt+F)
-    async getLastElement(list) {
+    async getLastElement(list: Array<any>) {
         return list[list.length - 1];
     }
 
     // Function with O(n) complexity
-    async findIndex(list, match) {
+    async findIndex(list: Array<any>, match: number) {
         // let match = Math.floor(Math.random() * 9999);
         // console.log('searching: ' + match);
         for (let i = 0, total = list.length; i < total; i++) {
@@ -29,7 +25,7 @@ class ComplexityFunctions {
     }
 
     // Function with O(n^2) complexity
-    async buildSquareMatrix(list) {
+    async buildSquareMatrix(list: Array<any>) {
         let matrix = [];
         // console.log('building: ' + matrix);
         for (let i = 0, total = list.length; i < total; i++) {
@@ -41,36 +37,24 @@ class ComplexityFunctions {
     }
 
     // Function with O(Log(n)) need to send in sorted arrays DummyData.numbers100.sort(function(a, b){return a - b})
-    // async binarySearch(array, element, offset = 0) {
-    binarySearch(arr, x, start, end) {
-        // Base Condition 
-        if (start > end) {
-            return false
-        };
+    async binarySearch(array: Array<any>, element: number, offset: number = 0) {
+        // split array in half
+        const half: number = array.length / 2;
+        const current = array[half];
 
-        // Find the middle index 
-        let mid = Math.floor((start + end) / 2);
-
-        // Compare mid with given key x 
-        if (arr[mid] === x) {
-            return true
-        };
-
-        // If element at mid is greater than x, 
-        // search in the left half of mid 
-        if (arr[mid] > x) {
-            return this.binarySearch(arr, x, start, mid - 1);
+        if (current === element) {
+            return offset + half;
+        } else if (element > current) {
+            const right = array.slice(half);
+            return await this.binarySearch(right, element, offset + half);
+        } else {
+            const left = array.slice(0, half)
+            return await this.binarySearch(left, element, offset);
         }
-        else {
-            // If element at mid is smaller than x, 
-            // search in the right half of mid 
-            return this.binarySearch(arr, x, mid + 1, end);
-        }
-
     }
 
     // Function with O(nLog(n)) complexity
-    async merge(a, b) {
+    async merge(a: Array<any>, b: Array<any>) {
         let i = 0
         let j = 0
         let temp = []
@@ -86,7 +70,7 @@ class ComplexityFunctions {
         temp = [...temp, ...a.slice(i), ...b.slice(j)]
         return temp
     }
-    async mergeSort(arr) {
+    async mergeSort(arr: Array<any>) {
         if (arr.length === 1) {
             return arr
         }
@@ -99,7 +83,7 @@ class ComplexityFunctions {
     }
 
     // Function with O(2^n) complexity
-    async powerset(n = '') {
+    async powerset(n: string = '') {
         const array = Array.from(n);
         const base = [''];
 
@@ -114,17 +98,15 @@ class ComplexityFunctions {
     }
 
     // Function with O(n!) complexity
-    getPermutations(string, prefix = '') {
+    getPermutations(string: string, prefix: string = '') {
         if (string.length <= 1) {
             return [prefix + string];
         }
 
-        return Array.from(string).reduce((result, char, index) => {
+        return Array.from(string).reduce((result: Array<any>, char: string, index: number) => {
             const reminder = string.slice(0, index) + string.slice(index + 1);
             result = result.concat(this.getPermutations(reminder, prefix + char));
             return result;
         }, []);
     }
 }
-
-module.exports = new ComplexityFunctions();

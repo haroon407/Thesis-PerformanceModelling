@@ -86,13 +86,13 @@ async function main() {
         // const result7 = await contract.evaluateTransaction('queryAllCars', '1000', '7');
 
         // // 2500
-        const result = await contract.evaluateTransaction('queryAllCars', '2500', '7');
-        const result2 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
-        const result3 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
-        const result4 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
-        const result5 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
-        const result6 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
-        const result7 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result2 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result3 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result4 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result5 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result6 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
+        // const result7 = await contract.evaluateTransaction('queryAllCars', '2500', '7');
 
         // const result = await contract.evaluateTransaction('queryCar', 'CAR12');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
