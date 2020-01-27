@@ -34,22 +34,7 @@ class FabCar extends Contract {
 
     async createCar(ctx, carNumber, make, model, color, owner) {
         console.info('============= START : Create Car ===========');
-        // console.info('findIndex start');
-        // let x = await ComplexityFunctions.findIndex();
-        // console.info('findIndex end: ' + x);
-        // console.info('mergeSort start');
-        // let j = await ComplexityFunctions.mergeSort(DummyData.numbers100);
-        // console.info('mergeSort end: ' + JSON.stringify(j));
-        // console.info('binary search start');
-        // let k = await ComplexityFunctions.binarySearch(DummyData.numbers100.sort(function (a, b) { return a - b }), 5614);
-        // console.info('binary search end: ' + JSON.stringify(k));
-        // console.info('powerset start');
-        // let r = await ComplexityFunctions.powerset('abcdefg');
-        // console.info('powerset end: ' + JSON.stringify(r));
-        console.info('getPermutations start');
-        let g = await ComplexityFunctions.getPermutations('abcde');
-        console.info('getPermutations end: ' + JSON.stringify(g));
-
+        
         const car = {
             color,
             docType: 'car',
@@ -69,7 +54,7 @@ class FabCar extends Contract {
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
 
         // Execute complexity function
-        this.getComplexityFunctionExecuted(n, option);
+        // this.getComplexityFunctionExecuted(n, option);
         // let result = ComplexityFunctions.getLastElement(DummyData.numbers10);
         // let result2 = ComplexityFunctions.findIndex(DummyData.numbers10, 1503);
         // console.log("O(1) - ", result);

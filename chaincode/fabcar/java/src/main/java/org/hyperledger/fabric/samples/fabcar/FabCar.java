@@ -136,9 +136,9 @@ public final class FabCar implements ContractInterface {
         final String endKey = "CAR999";
         List<Car> cars = new ArrayList<Car>();
 
-        System.out.println("Executing complexity function");
-        this.getComplexityFunctionExecuted(n, option);
-        System.out.println("Completed complexity function");
+        // System.out.println("Executing complexity function");
+        // this.getComplexityFunctionExecuted(n, option);
+        // System.out.println("Completed complexity function");
 
         QueryResultsIterator<KeyValue> results = stub.getStateByRange(startKey, endKey);
 

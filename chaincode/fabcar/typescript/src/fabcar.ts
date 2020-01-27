@@ -113,7 +113,7 @@ export class FabCar extends Contract {
         const endKey = 'CAR999';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
-        await this.getComplexityFunctionExecuted(n, option);
+        // await this.getComplexityFunctionExecuted(n, option);
 
         const allResults = [];
         while (true) {

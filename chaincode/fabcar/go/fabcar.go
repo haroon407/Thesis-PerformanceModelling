@@ -143,9 +143,7 @@ func (s *SmartContract) queryAllCars(APIstub shim.ChaincodeStubInterface, n stri
 	}
 	defer resultsIterator.Close()
 	// Executing the complexity function
-	fmt.Println("GOT n", n)
-	fmt.Println("GOT option", option)
-	GetComplexityFunctionExecuted(n, option)
+	// GetComplexityFunctionExecuted(n, option)
 	// buffer is a JSON array containing QueryResults
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
