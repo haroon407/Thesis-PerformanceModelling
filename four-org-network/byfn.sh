@@ -164,6 +164,7 @@ function networkUp() {
     export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org1.example.com/ca && ls *_sk)
     export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org2.example.com/ca && ls *_sk)
     export BYFN_CA3_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org3.example.com/ca && ls *_sk)
+    export BYFN_CA4_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org4.example.com/ca && ls *_sk)
   fi
   if [ "${CONSENSUS_TYPE}" == "kafka" ]; then
     COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_KAFKA}"
@@ -223,6 +224,7 @@ function upgradeNetwork() {
       export BYFN_CA1_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org1.example.com/ca && ls *_sk)
       export BYFN_CA2_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org2.example.com/ca && ls *_sk)
       export BYFN_CA3_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org3.example.com/ca && ls *_sk)
+      export BYFN_CA4_PRIVATE_KEY=$(cd crypto-config/peerOrganizations/org4.example.com/ca && ls *_sk)
     fi
     if [ "${CONSENSUS_TYPE}" == "kafka" ]; then
       COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_KAFKA}"
@@ -242,7 +244,7 @@ function upgradeNetwork() {
     docker cp -a orderer.example.com:/var/hyperledger/production/orderer $LEDGERS_BACKUP/orderer.example.com
     docker-compose $COMPOSE_FILES up -d --no-deps orderer.example.com
 
-    for PEER in peer0.org1.example.com peer1.org1.example.com peer0.org2.example.com peer1.org2.example.com peer0.org3.example.com peer1.org3.example.com; do
+    for PEER in peer0.org1.example.com peer1.org1.example.com peer0.org2.example.com peer1.org2.example.com peer0.org3.example.com peer1.org3.example.com peer0.org4.example.com peer1.org4.example.com; do
       echo "Upgrading peer $PEER"
 
       # Stop the peer and backup its ledger
@@ -275,7 +277,7 @@ function upgradeNetwork() {
 
 # Tear down running network
 function networkDown() {
-  # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3
+  # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3 (in this case org3 and 4 both defined in compose-ca file)
   # stop kafka and zookeeper containers in case we're running with kafka consensus-type
   docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_KAFKA -f $COMPOSE_FILE_RAFT2 -f $COMPOSE_FILE_CA -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
 
@@ -321,6 +323,8 @@ function replacePrivateKey() {
   cd crypto-config/peerOrganizations/org2.example.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd crypto-config/peerOrganizations/org3.example.com/ca/
+  PRIV_KEY=$(ls *_sk)
+  cd crypto-config/peerOrganizations/org4.example.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
@@ -371,7 +375,7 @@ function generateCerts() {
     exit 1
   fi
   echo
-  echo "Generate CCP files for Org1, Org2 and Org3"
+  echo "Generate CCP files for Org1, Org2, Org3 and ORG4"
   ./ccp-generate.sh
 }
 
@@ -390,7 +394,7 @@ function generateCerts() {
 # This file also specifies a consortium - ``SampleConsortium`` - consisting of our
 # two Peer Orgs.  Pay specific attention to the "Profiles" section at the top of
 # this file.  You will notice that we have two unique headers. One for the orderer genesis
-# block - ``ThreeOrgsOrdererGenesis`` - and one for our channel - ``ThreeOrgsChannel``.
+# block - ``FourOrgsOrdererGenesis`` - and one for our channel - ``FourOrgsChannel``.
 # These headers are important, as we will pass them in as arguments when we create
 # our artifacts.  This file also contains two additional specifications that are worth
 # noting.  Firstly, we specify the anchor peers for each Peer Org
@@ -428,7 +432,7 @@ function generateChannelArtifacts() {
   echo "CONSENSUS_TYPE="$CONSENSUS_TYPE
   set -x
   if [ "$CONSENSUS_TYPE" == "solo" ]; then
-    configtxgen -profile ThreeOrgsOrdererGenesis -channelID $SYS_CHANNEL -outputBlock ./channel-artifacts/genesis.block
+    configtxgen -profile FourOrgsOrdererGenesis -channelID $SYS_CHANNEL -outputBlock ./channel-artifacts/genesis.block
   elif [ "$CONSENSUS_TYPE" == "kafka" ]; then
     configtxgen -profile SampleDevModeKafka -channelID $SYS_CHANNEL -outputBlock ./channel-artifacts/genesis.block
   elif [ "$CONSENSUS_TYPE" == "etcdraft" ]; then
@@ -449,7 +453,7 @@ function generateChannelArtifacts() {
   echo "### Generating channel configuration transaction 'channel.tx' ###"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+  configtxgen -profile FourOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -462,7 +466,7 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org1MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+  configtxgen -profile FourOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -475,7 +479,7 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org2MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate \
+  configtxgen -profile FourOrgsChannel -outputAnchorPeersUpdate \
     ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
   res=$?
   set +x
@@ -490,12 +494,27 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org3MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate \
+  configtxgen -profile FourOrgsChannel -outputAnchorPeersUpdate \
     ./channel-artifacts/Org3MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org3MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
     echo "Failed to generate anchor peer update for Org3MSP..."
+    exit 1
+  fi
+  echo
+
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for Org4MSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile FourOrgsChannel -outputAnchorPeersUpdate \
+    ./channel-artifacts/Org4MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org4MSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for Org4MSP..."
     exit 1
   fi
   echo

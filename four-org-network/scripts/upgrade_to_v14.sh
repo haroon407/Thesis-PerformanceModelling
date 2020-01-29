@@ -74,15 +74,18 @@ addCapabilityToChannel() {
                       signConfigtxAsPeerOrg 2 config_update_in_envelope.pb
                       # Sign with PeerOrg3.Admin
                       signConfigtxAsPeerOrg 3 config_update_in_envelope.pb
+                      # Sign with PeerOrg4.Admin
+                      signConfigtxAsPeerOrg 4 config_update_in_envelope.pb
                       # Prepare to sign the update as the OrdererOrg.Admin
                       setOrdererGlobals
                 elif [ $GROUP == "application" ]; then
                       # Modifying the application group requires a majority of application admins to sign.
                       # Sign with PeerOrg1.Admin
                       signConfigtxAsPeerOrg 1 config_update_in_envelope.pb
-                      # Prepare to sign the update as the PeerOrg2.Admin and PeerOrg3.Admin
+                      # Prepare to sign the update as the PeerOrg2.Admin, PeerOrg3.Admin and PeerOrg4.Admin
                       setGlobals 0 2
                       setGlobals 0 3
+                      setGlobals 0 4
                 fi
         else
                # For the orderer system channel, only the orderer admin needs sign
