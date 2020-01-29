@@ -40,7 +40,7 @@ async function main() {
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
 
         // 10
-        // const result = await contract.evaluateTransaction('queryAllCars', '10', '1');
+        const result = await contract.evaluateTransaction('queryAllCars', '10', '1');
         // const result2 = await contract.evaluateTransaction('queryAllCars', '10', '1');
         // const result3 = await contract.evaluateTransaction('queryAllCars', '10', '1');
         // const result4 = await contract.evaluateTransaction('queryAllCars', '10', '1');
