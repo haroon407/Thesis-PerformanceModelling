@@ -32,9 +32,224 @@ class FabCar extends Contract {
         return carAsBytes.toString();
     }
 
+    async queryCar1CD(ctx) {
+        const stringQuery = `{
+            "selector": {
+               "owner": {
+                  "$eq": "Valeria"
+               }
+            }
+         }`
+        const iterator = await ctx.stub.getQueryResult(stringQuery);
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                // console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let Record;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+                allResults.push({ Key, Record });
+            }
+            if (res.done) {
+                // console.log('end of data');
+                await iterator.close();
+                // console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+        }
+    }
+
+    async queryCar2CD(ctx) {
+        const stringQuery = `{
+            "selector": {
+               "model": {
+                  "$eq": "FJ Cruiser"
+               },
+               "owner": {
+                  "$eq": "Tom"
+               }
+            }
+         }`
+        const iterator = await ctx.stub.getQueryResult(stringQuery);
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                // console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let Record;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+                allResults.push({ Key, Record });
+            }
+            if (res.done) {
+                // console.log('end of data');
+                await iterator.close();
+                // console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+        }
+    }
+
+    async queryCar3CD(ctx) {
+        const stringQuery = `{
+            "selector": {
+               "make": {
+                  "$eq": "Toyota"
+               },
+               "model": {
+                  "$eq": "Hilux"
+               },
+               "color": {
+                  "$eq": "black"
+               }
+            }
+         }`
+        const iterator = await ctx.stub.getQueryResult(stringQuery);
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                // console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let Record;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+                allResults.push({ Key, Record });
+            }
+            if (res.done) {
+                // console.log('end of data');
+                await iterator.close();
+                // console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+        }
+    }
+
+    async queryCar1LD(ctx) {
+        const stringQuery = "Valeria";
+        const startKey = 'CAR0';
+        const endKey = 'CAR32';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+        let result = {};
+        let Key;
+        let Record;
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+
+                Key = res.value.key;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+            }
+            if (Record.owner === stringQuery) {
+                result = { Key, Record };
+                await iterator.close();
+                return JSON.stringify(result);
+            } else if (res.done) {
+                await iterator.close();
+                return JSON.stringify({ message: "Not found" });
+            }
+        }
+    }
+
+    async queryCar2LD(ctx) {
+        const model = "FJ Cruiser";
+        const owner = "Tom";
+        const startKey = 'CAR0';
+        const endKey = 'CAR32';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+        let result = {};
+        let Key;
+        let Record;
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                Key = res.value.key;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+            }
+            if (Record.owner === owner && Record.model === model) {
+                result = { Key, Record };
+                await iterator.close();
+                return JSON.stringify(result);
+            } else if (res.done) {
+                await iterator.close();
+                return JSON.stringify({ message: "Not found" });
+            }
+        }
+    }
+
+    async queryCar3LD(ctx) {
+        const model = "Hilux";
+        const make = "Toyota";
+        const color = "black";
+        const startKey = 'CAR0';
+        const endKey = 'CAR32';
+
+        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+        let result = {};
+        let Key;
+        let Record;
+        while (true) {
+            const res = await iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+
+                Key = res.value.key;
+                try {
+                    Record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+            }
+            if (Record.make === make && Record.model === model && Record.color === color) {
+                result = { Key, Record };
+                await iterator.close();
+                return JSON.stringify(result);
+            } else if (res.done) {
+                await iterator.close();
+                return JSON.stringify({ message: "Not found" });
+            }
+        }
+    }
+
     async createCar(ctx, carNumber, make, model, color, owner) {
         console.info('============= START : Create Car ===========');
-        
+
         const car = {
             color,
             docType: 'car',
@@ -99,6 +314,19 @@ class FabCar extends Contract {
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
         console.info('============= END : changeCarOwner ===========');
     }
+
+    async deleteCarCD(ctx, carNumber) {
+        console.info('============= START : deleteCarCD ===========');
+        await ctx.stub.deleteState(carNumber); // get the car from chaincode state
+        console.info('============= END : deleteCarCD ===========');
+    }
+
+    async deleteCarLD(ctx, carNumber) {
+        console.info('============= START : deleteCarCD ===========');
+        await ctx.stub.deleteState(carNumber); // get the car from chaincode state
+        console.info('============= END : deleteCarCD ===========');
+    }
+
 
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
