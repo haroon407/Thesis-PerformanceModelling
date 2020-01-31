@@ -13,6 +13,12 @@ organizations:
     peers:
     - peer0.org2.example.com
     - peer1.org2.example.com
+    - peer2.org2.example.com
+    - peer3.org2.example.com
+    - peer4.org2.example.com
+    - peer5.org2.example.com
+    - peer6.org2.example.com
+    - peer7.org2.example.com
     certificateAuthorities:
     - ca.org2.example.com
 peers:
