@@ -7,7 +7,7 @@
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
 
-const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
+const ccpPath = path.resolve(__dirname, '..', '..', '8-peers-network', 'connection-org1.json');
 
 async function main() {
     try {
@@ -40,27 +40,27 @@ async function main() {
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
 
         await contract.submitTransaction('createCar', 'CAR10', 'Toyota', 'Hilux', 'green', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR11', 'Toyota', 'LandCruiser', 'silver', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR12', 'Toyota', 'FJ Cruiser', 'yellow', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR13', 'Honda', 'Civic', 'gold', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR14', 'Honda', 'Accord', 'blue', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR15', 'Toyota', 'Corolla', 'red', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR16', 'Honda', 'Vezel', 'white', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR17', 'Honda', 'CRV', 'black', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR18', 'Honda', 'Civic', 'gold', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR19', 'Honda', 'City', 'blue', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR20', 'Toyota', 'Camry', 'red', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR21', 'Honda', 'BRV', 'white', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR22', 'Honda', 'MRV', 'black', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR23', 'Honda', 'Fit', 'blue', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR24', 'Toyota', 'Prado', 'silver', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR25', 'Honda', 'Brio', 'white', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR26', 'Honda', 'Pilot', 'black', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR27', 'Toyota', 'Crown', 'gold', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR28', 'Toyota', 'Mark X', 'green', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR29', 'Toyota', 'Premio', 'red', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR30', 'Toyota', 'Hilux', 'black', 'Tom');
-        await contract.submitTransaction('createCar', 'CAR31', 'Toyota', 'Fortuner', 'white', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR11', 'Toyota', 'LandCruiser', 'silver', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR12', 'Toyota', 'FJ Cruiser', 'yellow', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR13', 'Honda', 'Civic', 'gold', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR14', 'Honda', 'Accord', 'blue', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR15', 'Toyota', 'Corolla', 'red', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR16', 'Honda', 'Vezel', 'white', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR17', 'Honda', 'CRV', 'black', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR18', 'Honda', 'Civic', 'gold', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR19', 'Honda', 'City', 'blue', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR20', 'Toyota', 'Camry', 'red', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR21', 'Honda', 'BRV', 'white', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR22', 'Honda', 'MRV', 'black', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR23', 'Honda', 'Fit', 'blue', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR24', 'Toyota', 'Prado', 'silver', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR25', 'Honda', 'Brio', 'white', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR26', 'Honda', 'Pilot', 'black', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR27', 'Toyota', 'Crown', 'gold', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR28', 'Toyota', 'Mark X', 'green', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR29', 'Toyota', 'Premio', 'red', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR30', 'Toyota', 'Hilux', 'black', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR31', 'Toyota', 'Fortuner', 'white', 'Tom');
 
         // await contract.submitTransaction('changeCarOwner', 'CAR12', 'Jerry');
         console.log('Transaction has been submitted');

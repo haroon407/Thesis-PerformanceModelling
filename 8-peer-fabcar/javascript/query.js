@@ -7,7 +7,7 @@
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
 
-const ccpPath = path.resolve(__dirname, '..', '..', 'first-network', 'connection-org1.json');
+const ccpPath = path.resolve(__dirname, '..', '..', '8-peers-network', 'connection-org1.json');
 
 async function main() {
     try {
@@ -38,11 +38,11 @@ async function main() {
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        // const result = await contract.evaluateTransaction('queryAllCars', '10', '1');
+        const result = await contract.evaluateTransaction('queryAllCars', '10', '1');
 
         // const result = await contract.evaluateTransaction('queryCar3LD');
         // await contract.submitTransaction('changeCarOwner', 'CAR30', 'Jerry');
-        await contract.submitTransaction('deleteCarCD', 'CAR28');
+        // await contract.submitTransaction('deleteCarCD', 'CAR28');
         // const result = await contract.evaluateTransaction('queryCar','CAR28');
 
         // 10

@@ -112,7 +112,7 @@ function removeUnwantedImages() {
   fi
 }
 
-# Versions of fabric known not to work with this release of four-org-network
+# Versions of fabric known not to work with this release of four-orgthree-org-network
 BLACKLISTED_VERSIONS="^1\.0\. ^1\.1\.0-preview ^1\.1\.0-alpha"
 
 # Do some basic sanity checking to make sure that the appropriate versions of fabric
@@ -283,7 +283,7 @@ function networkDown() {
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
     #Delete any ledger backups
-    docker run -v $PWD:/tmp/four-org-network --rm hyperledger/fabric-tools:$IMAGETAG rm -Rf /tmp/four-org-network/ledgers-backup
+    docker run -v $PWD:/tmp/four-orgthree-org-network --rm hyperledger/fabric-tools:$IMAGETAG rm -Rf /tmp/four-orgthree-org-network/ledgers-backup
     #Cleanup the chaincode containers
     clearContainers
     #Cleanup images

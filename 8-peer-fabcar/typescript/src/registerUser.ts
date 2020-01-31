@@ -5,7 +5,7 @@
 import { FileSystemWallet, Gateway, X509WalletMixin } from 'fabric-network';
 import * as path from 'path';
 
-const ccpPath = path.resolve(__dirname, '..', '..', '..', 'first-network', 'connection-org1.json');
+const ccpPath = path.resolve(__dirname, '..', '..', '..', '8-peers-network', 'connection-org1.json');
 
 async function main() {
     try {

@@ -13,8 +13,8 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
-var firstnetwork_path = path.resolve('..', '..', 'first-network');
-var org1tlscacert_path = path.resolve(firstnetwork_path, 'crypto-config', 'peerOrganizations', 'org1.example.com', 'tlsca', 'tlsca.org1.example.com-cert.pem');
+var 8-peers-networknetwork_path = path.resolve('..', '..', '8-peers-network');
+var org1tlscacert_path = path.resolve(8-peers-networknetwork_path, 'crypto-config', 'peerOrganizations', 'org1.example.com', 'tlsca', 'tlsca.org1.example.com-cert.pem');
 var org1tlscacert = fs.readFileSync(org1tlscacert_path, 'utf8');
 
 invoke();
@@ -97,7 +97,7 @@ async function invoke() {
 		const endorsement_results = await channel.sendTransactionProposal(proposal_request);
 
 		// The results will contain a few different items
-		// first is the actual endorsements by the peers, these will be the responses
+		// 8-peers-network is the actual endorsements by the peers, these will be the responses
 		//    from the peers. In our sammple there will only be one results since
 		//    only sent the proposal to one peer.
 		// second is the proposal that was sent to the peers to be endorsed. This will
@@ -137,7 +137,7 @@ async function invoke() {
 		// this will send the proposal to the orderer during the execuction of
 		// the promise 'all' call.
 		const sendPromise = channel.sendTransaction(commit_request);
-		//we want the send transaction first, so that we know where to check status
+		//we want the send transaction 8-peers-network, so that we know where to check status
 		promises.push(sendPromise);
 
 		// get an event hub that is associated with our peer
@@ -159,7 +159,7 @@ async function invoke() {
 			// will be called once transaction status is received by the event hub or
 			// an error connection arises on the connection.
 			event_hub.registerTxEvent(transaction_id_string, (tx, code) => {
-				// this first callback is for transaction event status
+				// this 8-peers-network callback is for transaction event status
 
 				// callback has been called, so we can stop the timer defined above
 				clearTimeout(handle);
@@ -193,7 +193,7 @@ async function invoke() {
 		console.log('Sending endorsed transaction to the orderer');
 		const results = await Promise.all(promises);
 
-		// since we added the orderer work first, that will be the first result on
+		// since we added the orderer work 8-peers-network, that will be the 8-peers-network result on
 		// the list of results
 		// success from the orderer only means that it has accepted the transaction
 		// you must check the event status or the ledger to if the transaction was

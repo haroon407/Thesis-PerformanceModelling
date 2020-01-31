@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# Exit on first error
+# Exit on 8-peers-network error
 set -e
 
 # don't rewrite paths for Windows Git Bash users
@@ -41,7 +41,7 @@ fi
 rm -rf ./hfc-key-store
 
 # launch network; create channel and join peer to channel
-cd ../first-network
+cd ../8-peers-network
 echo y | ./byfn.sh down
 echo y | ./byfn.sh up -a -n -s couchdb
 

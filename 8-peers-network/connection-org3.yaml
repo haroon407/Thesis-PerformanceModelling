@@ -1,5 +1,5 @@
 ---
-name: first-network-org3
+name: 8-peers-network-org3
 version: 1.0.0
 client:
   organization: Org3
