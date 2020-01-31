@@ -107,7 +107,6 @@ if [ "${NO_CHAINCODE}" != "true" ]; then
 
 	echo "Install chaincode on peer0.org2..."
 	installChaincode 0 2
-	installChaincode 1 2
 
 	# Instantiate chaincode on peer0.org2
 	echo "Instantiating chaincode on peer0.org2..."
