@@ -31,6 +31,12 @@ function yaml_ccp {
 ORG=1
 P0PORT=7051
 P1PORT=8051
+P2PORT=11051
+P3PORT=12051
+P4PORT=13051
+P5PORT=14051
+P6PORT=15051
+P7PORT=16051
 CAPORT=7054
 PEERPEM=crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 CAPEM=crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem

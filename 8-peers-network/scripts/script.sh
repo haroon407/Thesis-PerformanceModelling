@@ -60,8 +60,16 @@ createChannel() {
 }
 
 joinChannel () {
-	for org in 1 2; do
+	for org in 1; do
 	    for peer in 0 1 2 3 4 5 6 7; do
+		joinChannelWithRetry $peer $org
+		echo "===================== peer${peer}.org${org} joined channel '$CHANNEL_NAME' ===================== "
+		sleep $DELAY
+		echo
+	    done
+	done
+	for org in 2; do
+	    for peer in 0 1; do
 		joinChannelWithRetry $peer $org
 		echo "===================== peer${peer}.org${org} joined channel '$CHANNEL_NAME' ===================== "
 		sleep $DELAY
@@ -100,12 +108,6 @@ if [ "${NO_CHAINCODE}" != "true" ]; then
 	echo "Install chaincode on peer0.org2..."
 	installChaincode 0 2
 	installChaincode 1 2
-	installChaincode 2 2
-	installChaincode 3 2
-	installChaincode 4 2
-	installChaincode 5 2
-	installChaincode 6 2
-	installChaincode 7 2
 
 	# Instantiate chaincode on peer0.org2
 	echo "Instantiating chaincode on peer0.org2..."
