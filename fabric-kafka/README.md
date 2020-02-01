@@ -20,7 +20,7 @@ Download binaries and docker images (Follow Hyperledger fabric first network tut
 
 Go to root folder,
 ```shell
-curl -sSL http://bit.ly/2ysbOFE | bash -s
+curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.4 1.4.4 0.4.18
 ```
 After everything done you will have folder structure like:
 
@@ -47,6 +47,7 @@ fabric-sample-with-kafka$ tree
 
 ```shell
 cd first-network
+./byfn.sh generate
 
 # Start up network
 ./byfn.sh up -o kafka
