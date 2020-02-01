@@ -181,8 +181,8 @@ function networkUp() {
 
   if [ "$CONSENSUS_TYPE" == "kafka" ]; then
     sleep 1
-    echo "Sleeping 10s to allow $CONSENSUS_TYPE cluster to complete booting"
-    sleep 9
+    echo "Sleeping 10s 15 allow $CONSENSUS_TYPE cluster to complete booting"
+    sleep 14
   fi
 
   if [ "$CONSENSUS_TYPE" == "etcdraft" ]; then
@@ -511,7 +511,7 @@ COMPOSE_FILE_CA=docker-compose-ca.yaml
 LANGUAGE=golang
 # default image tag
 IMAGETAG="latest"
-# default consensus type #solo
+# default consensus type
 CONSENSUS_TYPE="solo"
 # Parse commandline args
 if [ "$1" = "-m" ]; then # supports old usage, muscle memory is powerful!
@@ -587,7 +587,7 @@ else
   echo "${EXPMODE} for channel '${CHANNEL_NAME}' with CLI timeout of '${CLI_TIMEOUT}' seconds and CLI delay of '${CLI_DELAY}' seconds"
 fi
 # ask for confirmation to proceed
-askProceed
+# askProceed
 
 #Create the network using docker compose
 if [ "${MODE}" == "up" ]; then
