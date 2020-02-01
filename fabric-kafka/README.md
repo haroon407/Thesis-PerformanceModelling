@@ -50,13 +50,13 @@ cd first-network
 ./byfn.sh generate
 
 # Start up network
-./byfn.sh up -o kafka
+./byfn.sh -m up -o kafka
 ```
 
 #### 4. Bring down the network
 
 ```shell
-./byfn.sh down -o kafka
+./byfn.sh -m down -o kafka
 ```
 ## What's behind the code change?
 

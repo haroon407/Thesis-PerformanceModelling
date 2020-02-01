@@ -41,9 +41,9 @@ fi
 rm -rf ./hfc-key-store
 
 # launch network; create channel and join peer to channel
-cd ../first-network
-echo y | ./byfn.sh down
-echo y | ./byfn.sh up -a -n -s couchdb
+cd ../fabric-kafka/first-network
+echo y | ./byfn.sh -m down -o kafka
+echo y | ./byfn.sh -m up -a -n -s couchdb -o kafka
 
 CONFIG_ROOT=/opt/gopath/src/github.com/hyperledger/fabric/peer
 ORG1_MSPCONFIGPATH=${CONFIG_ROOT}/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
