@@ -377,6 +377,7 @@ Profiles:
                 - kafka1.example.com:9092
                 - kafka2.example.com:9092
                 - kafka3.example.com:9092
+                - kafka4.example.com:9092
 
             Organizations:
             - *OrdererOrg
