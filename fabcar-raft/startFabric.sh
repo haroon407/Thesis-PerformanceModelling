@@ -41,7 +41,7 @@ fi
 rm -rf ./hfc-key-store
 
 # launch network; create channel and join peer to channel
-cd ../first-network
+cd ../first-network-raft
 echo y | ./byfn.sh -m down -o etcdraft
 echo y | ./byfn.sh -m up -a -n -s couchdb -o etcdraft
 
