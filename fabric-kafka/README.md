@@ -15,7 +15,7 @@ This repository supports `5 zookeepers and 4 kakfas`.
 
 ## How to run it?
 
-#### 1. Get binaries & docker images
+#### 1. Get binaries & docker images (Dont follow if already have hyperledger and kafka installed)
 Download binaries and docker images (Follow Hyperledger fabric first network tutorial). 
 
 Go to root folder,
@@ -43,11 +43,18 @@ fabric-sample-with-kafka$ tree
 ...
 ```
 
+Install the following (for mac):
+brew cask install java
+brew install kafka
+
 #### 3. Run E2E test.
 
 ```shell
 cd first-network
 ./byfn.sh generate
+
+# Start Kafka services
+brew services start kafka
 
 # Start up network
 ./byfn.sh -m up -o kafka

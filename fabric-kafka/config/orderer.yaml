@@ -48,7 +48,7 @@ General:
         ServerInterval: 7200s
         # ServerTimeout is the duration the server waits for a response from
         # a client before closing the connection.
-        ServerTimeout: 20s
+        ServerTimeout: 60s
     # Cluster settings for ordering service nodes that communicate with other ordering service nodes
     # such as Raft based ordering service.
     Cluster:
@@ -210,9 +210,9 @@ Kafka:
         # response, or a transmission. See Config.Net for more info:
         # https://godoc.org/github.com/Shopify/sarama#Config
         NetworkTimeouts:
-            DialTimeout: 10s
-            ReadTimeout: 10s
-            WriteTimeout: 10s
+            DialTimeout: 40s
+            ReadTimeout: 40s
+            WriteTimeout: 40s
         # Affects the metadata requests when the Kafka cluster is in the middle
         # of a leader election.See Config.Metadata for more info:
         # https://godoc.org/github.com/Shopify/sarama#Config
