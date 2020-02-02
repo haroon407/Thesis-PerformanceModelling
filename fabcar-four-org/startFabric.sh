@@ -108,6 +108,7 @@ docker exec \
     -v 1.0 \
     -p "$CC_SRC_PATH" \
     -l "$CC_RUNTIME_LANGUAGE"
+#OutOf(2,'Org1.member', 'Org2.member') "AND('Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')"
 
 echo "Instantiating smart contract on mychannel"
 docker exec \
@@ -121,7 +122,7 @@ docker exec \
     -l "$CC_RUNTIME_LANGUAGE" \
     -v 1.0 \
     -c '{"Args":[]}' \
-    -P "AND('Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')" \
+    -P "OutOf(2,'Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')" \
     --tls \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.org1.example.com:7051 \

@@ -6,6 +6,7 @@
 
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
+const moment = require('moment');
 
 const ccpPath = path.resolve(__dirname, '..', '..', '8-peers-network', 'connection-org1.json');
 
@@ -39,7 +40,7 @@ async function main() {
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
 
-        await contract.submitTransaction('createCar', 'CAR10', 'Toyota', 'Hilux', 'green', 'Tom');
+        // await contract.submitTransaction('createCar', 'CAR10', 'Toyota', 'Hilux', 'green', 'Tom');
         // await contract.submitTransaction('createCar', 'CAR11', 'Toyota', 'LandCruiser', 'silver', 'Tom');
         // await contract.submitTransaction('createCar', 'CAR12', 'Toyota', 'FJ Cruiser', 'yellow', 'Tom');
         // await contract.submitTransaction('createCar', 'CAR13', 'Honda', 'Civic', 'gold', 'Tom');
@@ -62,8 +63,57 @@ async function main() {
         // await contract.submitTransaction('createCar', 'CAR30', 'Toyota', 'Hilux', 'black', 'Tom');
         // await contract.submitTransaction('createCar', 'CAR31', 'Toyota', 'Fortuner', 'white', 'Tom');
 
+        let colorArray = [
+            'green',
+            'blue',
+            'yellow',
+            'red',
+            'white',
+            'black',
+            'silver',
+            'gold',
+            'grey',
+            'brown',
+            'maroon',
+        ];
+        let carArray = [
+            'Toyota',
+            'Honda',
+            'Chevrolet',
+            'Suzuki',
+            'BMW',
+            'Audi',
+            'GMC',
+            'Opel',
+            'Mercedes'
+        ];
+        let ownerArray = [
+            'Paul',
+            'Tom',
+            'Jerry',
+            'Henry',
+            'Micheal',
+            'Trevor',
+            'Philip'
+        ]
+        let timeStart;
+        let timeEnd;
+        let randomColor;
+        let randomCar;
+        let randomOwner;
+        for (let i = 10; i < 11; i++) {
+            randomColor = Math.floor(Math.random() * colorArray.length);
+            randomCar = Math.floor(Math.random() * carArray.length);
+            randomOwner = Math.floor(Math.random() * ownerArray.length);
+            timeStart = moment.now();
+            console.log("==============    " + moment.utc(timeStart).format("HH:mm:ss.SSS") + "   ==============");
+            await contract.submitTransaction('createCar', 'CAR' + i, carArray[randomCar], 'SubModel'+i, colorArray[randomColor], ownerArray[randomOwner]);
+            timeEnd = moment.now();
+        }
+
         // await contract.submitTransaction('changeCarOwner', 'CAR12', 'Jerry');
-        console.log('Transaction has been submitted');
+        console.log('Transaction has been submitted in : ' + moment(timeEnd).diff(moment(timeStart)));
+        console.log("==============    " + moment.utc(timeEnd).format("HH:mm:ss.SSS") + "   ==============");
 
         // Disconnect from the gateway.
         await gateway.disconnect();
