@@ -122,7 +122,7 @@ docker exec \
     -l "$CC_RUNTIME_LANGUAGE" \
     -v 1.0 \
     -c '{"Args":[]}' \
-    -P "OutOf(2,'Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')" \
+    -P "OR(AND('Org1MSP.member','Org2MSP.member','Org3MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org2MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'))" \
     --tls \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.org1.example.com:7051 \

@@ -79,7 +79,7 @@ async function main() {
         let randomColor;
         let randomCar;
         let randomOwner;
-        for (let i = 10; i < 11; i++) {
+        for (let i = 10; i < 20; i++) {
             randomColor = Math.floor(Math.random() * colorArray.length);
             randomCar = Math.floor(Math.random() * carArray.length);
             randomOwner = Math.floor(Math.random() * ownerArray.length);

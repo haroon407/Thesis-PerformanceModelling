@@ -56,8 +56,6 @@ setGlobals() {
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
     if [ $PEER -eq 0 ]; then
       CORE_PEER_ADDRESS=peer0.org3.example.com:11051
-    else
-      CORE_PEER_ADDRESS=peer1.org3.example.com:12051
     fi
   elif [ $ORG -eq 4 ]; then
     CORE_PEER_LOCALMSPID="Org4MSP"
@@ -65,8 +63,6 @@ setGlobals() {
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp
     if [ $PEER -eq 0 ]; then
       CORE_PEER_ADDRESS=peer0.org4.example.com:13051
-    else
-      CORE_PEER_ADDRESS=peer1.org4.example.com:14051
     fi
   else
     echo "================== ERROR !!! ORG Unknown =================="
@@ -148,12 +144,12 @@ instantiateChaincode() {
   # the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n mycc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100","b","200"]}' -P "OutOf(2,'Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n mycc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100","b","200"]}' -P "OR(AND('Org1MSP.member','Org2MSP.member','Org3MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org2MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'))" >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OutOf(2,'Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR(AND('Org1MSP.member','Org2MSP.member','Org3MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org2MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'))" >&log.txt
     res=$?
     set +x
   fi
@@ -169,7 +165,7 @@ upgradeChaincode() {
   setGlobals $PEER $ORG
 
   set -x
-  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "OutOf(2,'Org1MSP.member','Org2MSP.member','Org3MSP.member','Org4MSP.member')"
+  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "OR(AND('Org1MSP.member','Org2MSP.member','Org3MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org2MSP.member','Org3MSP.member','Org4MSP.member'),AND('Org1MSP.member','Org3MSP.member','Org4MSP.member'))"
   res=$?
   set +x
   cat log.txt
