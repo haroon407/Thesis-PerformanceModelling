@@ -149,7 +149,7 @@ class FabCar extends Contract {
     async queryCar1LD(ctx) {
         const stringQuery = "Valeria";
         const startKey = 'CAR0';
-        const endKey = 'CAR32';
+        const endKey = 'CAR999';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
         let result = {};
@@ -183,7 +183,7 @@ class FabCar extends Contract {
         const model = "FJ Cruiser";
         const owner = "Tom";
         const startKey = 'CAR0';
-        const endKey = 'CAR32';
+        const endKey = 'CAR999';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
         let result = {};
@@ -205,10 +205,11 @@ class FabCar extends Contract {
                 result = { Key, Record };
                 await iterator.close();
                 return JSON.stringify(result);
-            } else if (res.done) {
-                await iterator.close();
-                return JSON.stringify({ message: "Not found" });
-            }
+            } 
+            // else if (res.done) {
+            //     await iterator.close();
+            //     return JSON.stringify({ message: "Not found" });
+            // }
         }
     }
 
@@ -217,7 +218,7 @@ class FabCar extends Contract {
         const make = "Toyota";
         const color = "black";
         const startKey = 'CAR0';
-        const endKey = 'CAR32';
+        const endKey = 'CAR999';
 
         const iterator = await ctx.stub.getStateByRange(startKey, endKey);
         let result = {};
@@ -240,10 +241,11 @@ class FabCar extends Contract {
                 result = { Key, Record };
                 await iterator.close();
                 return JSON.stringify(result);
-            } else if (res.done) {
-                await iterator.close();
-                return JSON.stringify({ message: "Not found" });
-            }
+            } 
+            // else if (res.done) {
+            //     await iterator.close();
+            //     return JSON.stringify({ message: "Not found" });
+            // }
         }
     }
 

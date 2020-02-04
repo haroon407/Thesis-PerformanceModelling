@@ -41,7 +41,24 @@ async function main() {
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
         // const result = await contract.evaluateTransaction('queryAllCars', '10', '1');
         console.log("==============    " + moment.utc(moment.now()).format("HH:mm:ss.SSS") +"    ==============");
+        let result;
+        for (let i = 0 ; i < 30 ; i++ ){
+            let index = Math.floor(Math.random() * (999 - 100 + 1) ) + 100;
+            if(index>120 || index === 82 || index === 87){
+                index = index - 70;
+            }
+            // result = await contract.evaluateTransaction('queryCar', 'CAR'+index);
+            // result = await contract.evaluateTransaction('queryCar2CD');
+            // result = await contract.evaluateTransaction('queryCar2CD');
+            // result = await contract.evaluateTransaction('queryAllCars', '10', '1');
+            console.log('index ===> ' + index);
+            await contract.submitTransaction('deleteCarCD', 'CAR'+index);
+            // await contract.submitTransaction('changeCarOwner', 'CAR'+index, 'Jerry');
+            // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        }
         // const result = await contract.evaluateTransaction('queryCar', 'CAR8');
+
+
         // const result = await contract.evaluateTransaction('queryCar3LD');
         // await contract.submitTransaction('changeCarOwner', 'CAR30', 'Jerry');
         // await contract.submitTransaction('deleteCarCD', 'CAR28');
@@ -103,7 +120,7 @@ async function main() {
         // const result7 = await contract.evaluateTransaction('queryAllCars', '2500', '1');
 
         // const result = await contract.evaluateTransaction('queryCar', 'CAR12');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
