@@ -1,0 +1,21 @@
+sudo: requried
+
+services:
+  - docker
+
+before_install:
+  - docker -v
+  - docker-compose -v
+
+install:
+  - curl -sSL http://bit.ly/2ysbOFE | bash -s
+  - docker images
+  - ( cd bin && ./cryptogen version)
+  
+script:
+  - ls -l
+  - cd first-network
+  - ./byfn.sh up -o kafka
+
+after_script:
+  - ./byfn.sh down -o kafka

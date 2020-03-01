@@ -1,7 +1,8 @@
 [//]: # (SPDX-License-Identifier: CC-BY-4.0)
 
 ## Hyperledger Fabric Samples
-
+current version installed using:
+' curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.4 1.4.4 0.4.18 '
 Please visit the [installation instructions](http://hyperledger-fabric.readthedocs.io/en/latest/install.html)
 to ensure you have the correct prerequisites installed. Please use the
 version of the documentation that matches the version of the software you

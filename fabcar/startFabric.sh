@@ -40,7 +40,8 @@ fi
 # clean the keystore
 rm -rf ./hfc-key-store
 
-# launch network; create channel and join peer to channel
+
+# launch network; create channel and join peer to channel - s couchdb or -s leveldb
 cd ../first-network
 echo y | ./byfn.sh down
 echo y | ./byfn.sh up -a -n -s couchdb
