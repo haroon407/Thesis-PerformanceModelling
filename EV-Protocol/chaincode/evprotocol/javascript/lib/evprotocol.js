@@ -46,14 +46,12 @@ class EVProtocol extends Contract {
         const stringQuery = `{
             "selector": {
                "postalCode": {
-                  "$gte": `+ upperRange + `
-               },
-               "postalCode": {
-                "$lte": `+ lowerRange + `
-            },
-            "city": {
-                "$eq": `+ city + `
-            }
+                  "$gte": `+ lowerRange + `,
+                  "$lte": `+ upperRange + `
+               }
+               "city": {
+                   "$eq": "`+ city + `"` + `
+                }
             }
          }`
         const iterator = await ctx.stub.getQueryResult(stringQuery);
