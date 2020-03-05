@@ -79,7 +79,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	if function == "queryEV" {
 		return s.queryEV(APIstub, args)
 	} else if function == "queryEVWithLocation" {
-		return s.queryEVWithLocation(APIstub, args[0], args[1], args[2])
+		postalCode, _ := strconv.Atoi(args[0])
+		return s.queryEVWithLocation(APIstub, postalCode, args[1], args[2], args[3])
 	} else if function == "initLedger" {
 		return s.initLedger(APIstub)
 	} else if function == "createEV" {
@@ -92,6 +93,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.createCP(APIstub, args)
 	} else if function == "addCPBalance" {
 		return s.addCPBalance(APIstub, args)
+	} else if function == "subtractCPBalance" {
+		return s.subtractCPBalance(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -118,12 +121,12 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 		EV{color: "grey", manufacturer: "BMW", model: "i3", chargingLevel: "2", connector: "Type-2", owner: "Max", postalCode: 81381, city: "Munich"},
 		EV{color: "orange", manufacturer: "BMW", model: "i3", chargingLevel: "1", connector: "Type-F-(Schuko)", owner: "Markus", postalCode: 81374, city: "Munich"},
 		EV{color: "white", manufacturer: "BMW", model: "i8", chargingLevel: "1", connector: "Type-F-(Schuko)", owner: "Sammy", postalCode: 81382, city: "Munich"},
-		EV{color: "brown", manufacturer: "BMW", model: "i8", chargingLevel: "3", connector: "Combo-CCS", owner: "Darren", postalCode: 81375, city: "Munich"}
+		EV{color: "brown", manufacturer: "BMW", model: "i8", chargingLevel: "3", connector: "Combo-CCS", owner: "Darren", postalCode: 81375, city: "Munich"},
 	}
 
 	cps := []CP{
 		CP{name: "BavariaChargers", balance: 1000000},
-		CP{name: "GeneralChargers", balance: 3000000}
+		CP{name: "GeneralChargers", balance: 3000000},
 	}
 
 	i := 0
@@ -150,8 +153,8 @@ func (s *SmartContract) createEV(APIstub shim.ChaincodeStubInterface, args []str
 	if len(args) != 9 {
 		return shim.Error("Expecting 9 arguments")
 	}
-	evNumber, manufacturer, model, color, chargingLevel, connector, owner, postalCode, city
-	var ev = EV{manufacturer: args[1], model: args[2], color: args[3], chargingLevel: args[4], connector: args[5], owner: args[6], postalCode: args[7], city: args[8]}
+	postalCode, _:= strconv.Atoi(args[7])
+	var ev = EV{manufacturer: args[1], model: args[2], color: args[3], chargingLevel: args[4], connector: args[5], owner: args[6], postalCode: postalCode, city: args[8]}
 
 	evAsBytes, _ := json.Marshal(ev)
 	APIstub.PutState(args[0], evAsBytes)
@@ -203,12 +206,28 @@ func (s *SmartContract) queryAllEVs(APIstub shim.ChaincodeStubInterface, n strin
 	return shim.Success(buffer.Bytes())
 }
 
-func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface, postalCode int, offset string, , city string) sc.Response {
+func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface, postalCode int, offset string, city string, cpNumber string) sc.Response {
+	
+	offsetInt, _:= strconv.Atoi(offset)
+	lowerRange := postalCode - offsetInt
+	upperRange := postalCode + offsetInt
+	feeAmount := 500000
 
-	lowerRange := postalCode - offset
-	upperRange := postalCode + offset
-	city := "Munich"
+	// Deducting fee and updating CP
+	cpAsBytes, _ := APIstub.GetState(cpNumber)
+	cp := CP{}
+	json.Unmarshal(cpAsBytes, &cp)
+	
+	if cp.balance - feeAmount < 0 {
+		return shim.Error(cpNumber + " does not have enough balance for this transaction")
+	}
 
+	cp.balance = cp.balance - feeAmount
+
+	cpAsBytes, _ = json.Marshal(cp)
+	APIstub.PutState(args[0], cpAsBytes)
+
+	// Preparing query
 	stringQuery := `{
 		"selector": {
 		   "postalCode": {
@@ -223,7 +242,7 @@ func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface,
 		}
 	 }`
 
-	resultsIterator, err := APIstub.getQueryResult(stringQuery)
+	resultsIterator, err := APIstub.GetQueryResult(stringQuery)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -274,10 +293,68 @@ func (s *SmartContract) changeEVOwner(APIstub shim.ChaincodeStubInterface, args 
 	ev := EV{}
 
 	json.Unmarshal(evAsBytes, &ev)
-	ev.Owner = args[1]
+	ev.owner = args[1]
 
 	evAsBytes, _ = json.Marshal(ev)
 	APIstub.PutState(args[0], evAsBytes)
+
+	return shim.Success(nil)
+}
+
+func (s *SmartContract) createCP(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 2 {
+		return shim.Error("Expecting 2 arguments")
+	}
+	
+	balanceInt, _:= strconv.Atoi(args[2])
+	var cp = CP{name: args[1], balance: balanceInt}
+
+	cpAsBytes, _ := json.Marshal(cp)
+	APIstub.PutState(args[0], cpAsBytes)
+
+	return shim.Success(nil)
+}
+
+func (s *SmartContract) addCPBalance(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 2 {
+		return shim.Error("Expecting 2 arguments")
+	}
+
+	cpAsBytes, _ := APIstub.GetState(args[0])
+	cp := CP{}
+
+	json.Unmarshal(cpAsBytes, &cp)
+	amount, _ := strconv.Atoi(args[1])
+	cp.balance = cp.balance + amount
+
+	cpAsBytes, _ = json.Marshal(cp)
+	APIstub.PutState(args[0], cpAsBytes)
+
+	return shim.Success(nil)
+}
+
+func (s *SmartContract) subtractCPBalance(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 2 {
+		return shim.Error("Expecting 2 arguments")
+	}
+
+	cpAsBytes, _ := APIstub.GetState(args[0])
+	cp := CP{}
+
+	json.Unmarshal(cpAsBytes, &cp)
+	
+	amount, _:= strconv.Atoi(args[1])
+
+	if cp.balance - amount < 0 {
+		return shim.Error(args[0] + "does not have enough balance")
+	}
+	cp.balance = cp.balance - amount
+
+	cpAsBytes, _ = json.Marshal(cp)
+	APIstub.PutState(args[0], cpAsBytes)
 
 	return shim.Success(nil)
 }
