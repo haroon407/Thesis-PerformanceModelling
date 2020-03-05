@@ -44,19 +44,19 @@ type SmartContract struct {
 
 // Define the car structure, with 4 properties.  Structure tags are used by encoding/json library
 type EV struct {
-	manufacturer   string `json:"manufacturer"`
-	chargingLevel   string `json:"chargingLevel"`
-	connector   string `json:"connector"`
-	postalCode   int `json:"postalCode"`
-	city   string `json:"City"`
-	model  string `json:"model"`
-	color string `json:"color"`
-	owner  string `json:"owner"`
+	Manufacturer   string `json:"manufacturer"`
+	ChargingLevel   string `json:"chargingLevel"`
+	Connector   string `json:"connector"`
+	PostalCode   int `json:"postalCode"`
+	City   string `json:"city"`
+	Model  string `json:"model"`
+	Color string `json:"color"`
+	Owner  string `json:"owner"`
 }
 
 type CP struct {
-	name   string `json:"name"`
-	balance   int `json:"balance"`
+	Name   string `json:"name"`
+	Balance   int `json:"balance"`
 }
 
 /*
@@ -78,7 +78,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	// Route to the appropriate handler function to interact with the ledger appropriately
 	if function == "queryEV" {
 		return s.queryEV(APIstub, args)
-	} else if function == "queryEVWithLocation" {
+	} else if function == "queryEVWithLocation" { 
 		postalCode, _ := strconv.Atoi(args[0])
 		return s.queryEVWithLocation(APIstub, postalCode, args[1], args[2], args[3])
 	} else if function == "initLedger" {
@@ -112,21 +112,21 @@ func (s *SmartContract) queryEV(APIstub shim.ChaincodeStubInterface, args []stri
 
 func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Response {
 	evs := []EV{
-		EV{color: "blue", manufacturer: "BMW", model: "i3", chargingLevel: "1", connector: "Type-F-(Schuko)", owner: "John", postalCode: 81375, city: "Munich"},
-		EV{color: "red", manufacturer: "BMW", model: "i3", chargingLevel: "2", connector: "Type-2", owner: "Tom", postalCode: 81377, city: "Munich"},
-		EV{color: "green", manufacturer: "BMW", model: "i8", chargingLevel: "3", connector: "Combo-CCS", owner: "Jerry", postalCode: 81374, city: "Munich"},
-		EV{color: "yellow", manufacturer: "BMW", model: "i8", chargingLevel: "3", connector: "Combo-CCS", owner: "Phillip", postalCode: 81379, city: "Munich"},
-		EV{color: "black", manufacturer: "BMW", model: "i3", chargingLevel: "2", connector: "Type-2", owner: "Carlos", postalCode: 81372, city: "Munich"},
-		EV{color: "white", manufacturer: "BMW", model: "i3", chargingLevel: "1", connector: "Type-F-(Schuko)", owner: "Bernard", postalCode: 81369, city: "Munich"},
-		EV{color: "grey", manufacturer: "BMW", model: "i3", chargingLevel: "2", connector: "Type-2", owner: "Max", postalCode: 81381, city: "Munich"},
-		EV{color: "orange", manufacturer: "BMW", model: "i3", chargingLevel: "1", connector: "Type-F-(Schuko)", owner: "Markus", postalCode: 81374, city: "Munich"},
-		EV{color: "white", manufacturer: "BMW", model: "i8", chargingLevel: "1", connector: "Type-F-(Schuko)", owner: "Sammy", postalCode: 81382, city: "Munich"},
-		EV{color: "brown", manufacturer: "BMW", model: "i8", chargingLevel: "3", connector: "Combo-CCS", owner: "Darren", postalCode: 81375, city: "Munich"},
+		EV{Color: "blue", Manufacturer: "BMW", Model: "i3", ChargingLevel: "1", Connector: "Type-F-(Schuko)", Owner: "John", PostalCode: 81375, City: "Munich"},
+		EV{Color: "red", Manufacturer: "BMW", Model: "i3", ChargingLevel: "2", Connector: "Type-2", Owner: "Tom", PostalCode: 81377, City: "Munich"},
+		EV{Color: "green", Manufacturer: "BMW", Model: "i8", ChargingLevel: "3", Connector: "Combo-CCS", Owner: "Jerry", PostalCode: 81374, City: "Munich"},
+		EV{Color: "yellow", Manufacturer: "BMW", Model: "i8", ChargingLevel: "3", Connector: "Combo-CCS", Owner: "Phillip", PostalCode: 81379, City: "Munich"},
+		EV{Color: "black", Manufacturer: "BMW", Model: "i3", ChargingLevel: "2", Connector: "Type-2", Owner: "Carlos", PostalCode: 81372, City: "Munich"},
+		EV{Color: "white", Manufacturer: "BMW", Model: "i3", ChargingLevel: "1", Connector: "Type-F-(Schuko)", Owner: "Bernard", PostalCode: 81369, City: "Munich"},
+		EV{Color: "grey", Manufacturer: "BMW", Model: "i3", ChargingLevel: "2", Connector: "Type-2", Owner: "Max", PostalCode: 81381, City: "Munich"},
+		EV{Color: "orange", Manufacturer: "BMW", Model: "i3", ChargingLevel: "1", Connector: "Type-F-(Schuko)", Owner: "Markus", PostalCode: 81374, City: "Munich"},
+		EV{Color: "white", Manufacturer: "BMW", Model: "i8", ChargingLevel: "1", Connector: "Type-F-(Schuko)", Owner: "Sammy", PostalCode: 81382, City: "Munich"},
+		EV{Color: "brown", Manufacturer: "BMW", Model: "i8", ChargingLevel: "3", Connector: "Combo-CCS", Owner: "Darren", PostalCode: 81375, City: "Munich"},
 	}
 
 	cps := []CP{
-		CP{name: "BavariaChargers", balance: 1000000},
-		CP{name: "GeneralChargers", balance: 3000000},
+		CP{Name: "BavariaChargers", Balance: 1000000},
+		CP{Name: "GeneralChargers", Balance: 3000000},
 	}
 
 	i := 0
@@ -154,7 +154,7 @@ func (s *SmartContract) createEV(APIstub shim.ChaincodeStubInterface, args []str
 		return shim.Error("Expecting 9 arguments")
 	}
 	postalCode, _:= strconv.Atoi(args[7])
-	var ev = EV{manufacturer: args[1], model: args[2], color: args[3], chargingLevel: args[4], connector: args[5], owner: args[6], postalCode: postalCode, city: args[8]}
+	var ev = EV{Manufacturer: args[1], Model: args[2], Color: args[3], ChargingLevel: args[4], Connector: args[5], Owner: args[6], PostalCode: postalCode, City: args[8]}
 
 	evAsBytes, _ := json.Marshal(ev)
 	APIstub.PutState(args[0], evAsBytes)
@@ -218,11 +218,11 @@ func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface,
 	cp := CP{}
 	json.Unmarshal(cpAsBytes, &cp)
 	
-	if cp.balance - feeAmount < 0 {
+	if cp.Balance - feeAmount < 0 {
 		return shim.Error(cpNumber + " does not have enough balance for this transaction")
 	}
 
-	cp.balance = cp.balance - feeAmount
+	cp.Balance = cp.Balance - feeAmount
 
 	cpAsBytes, _ = json.Marshal(cp)
 	APIstub.PutState(cpNumber, cpAsBytes)
@@ -231,14 +231,12 @@ func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface,
 	stringQuery := `{
 		"selector": {
 		   "postalCode": {
-			  "$gte": ` + strconv.Itoa(upperRange) + `
-		   },
-		   "postalCode": {
-			"$lte": ` + strconv.Itoa(lowerRange) + `
-		},
-		"city": {
-			"$eq": ` + city + `
-		}
+			"$gte": ` + strconv.Itoa(lowerRange) + `,
+			"$lte": ` + strconv.Itoa(upperRange) + `
+		   	},
+			"city": {
+				"$eq": "` + city + `"` + `
+			}
 		}
 	 }`
 
@@ -293,7 +291,7 @@ func (s *SmartContract) changeEVOwner(APIstub shim.ChaincodeStubInterface, args 
 	ev := EV{}
 
 	json.Unmarshal(evAsBytes, &ev)
-	ev.owner = args[1]
+	ev.Owner = args[1]
 
 	evAsBytes, _ = json.Marshal(ev)
 	APIstub.PutState(args[0], evAsBytes)
@@ -308,7 +306,7 @@ func (s *SmartContract) createCP(APIstub shim.ChaincodeStubInterface, args []str
 	}
 	
 	balanceInt, _:= strconv.Atoi(args[2])
-	var cp = CP{name: args[1], balance: balanceInt}
+	var cp = CP{Name: args[1], Balance: balanceInt}
 
 	cpAsBytes, _ := json.Marshal(cp)
 	APIstub.PutState(args[0], cpAsBytes)
@@ -316,6 +314,7 @@ func (s *SmartContract) createCP(APIstub shim.ChaincodeStubInterface, args []str
 	return shim.Success(nil)
 }
 
+// Arguments: 0. CPNumber, 1. Amount
 func (s *SmartContract) addCPBalance(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 2 {
@@ -327,7 +326,7 @@ func (s *SmartContract) addCPBalance(APIstub shim.ChaincodeStubInterface, args [
 
 	json.Unmarshal(cpAsBytes, &cp)
 	amount, _ := strconv.Atoi(args[1])
-	cp.balance = cp.balance + amount
+	cp.Balance = cp.Balance + amount
 
 	cpAsBytes, _ = json.Marshal(cp)
 	APIstub.PutState(args[0], cpAsBytes)
@@ -348,10 +347,10 @@ func (s *SmartContract) subtractCPBalance(APIstub shim.ChaincodeStubInterface, a
 	
 	amount, _:= strconv.Atoi(args[1])
 
-	if cp.balance - amount < 0 {
+	if cp.Balance - amount < 0 {
 		return shim.Error(args[0] + "does not have enough balance")
 	}
-	cp.balance = cp.balance - amount
+	cp.Balance = cp.Balance - amount
 
 	cpAsBytes, _ = json.Marshal(cp)
 	APIstub.PutState(args[0], cpAsBytes)
