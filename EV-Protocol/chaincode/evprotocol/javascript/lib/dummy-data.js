@@ -117,11 +117,11 @@ const string11 = "7Gl4bQB23ef"; //11
 const chargeProviders = [
     {
         name: 'BavariaChargers',
-        credit: 100
+        balance: 1000000
     },
     {
         name: 'GeneralChargers',
-        credit: 300
+        balance: 3000000
     }
 ]
 
