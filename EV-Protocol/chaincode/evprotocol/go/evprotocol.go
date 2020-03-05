@@ -225,7 +225,7 @@ func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface,
 	cp.balance = cp.balance - feeAmount
 
 	cpAsBytes, _ = json.Marshal(cp)
-	APIstub.PutState(args[0], cpAsBytes)
+	APIstub.PutState(cpNumber, cpAsBytes)
 
 	// Preparing query
 	stringQuery := `{
