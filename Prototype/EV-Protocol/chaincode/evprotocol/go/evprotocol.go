@@ -80,6 +80,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	// query EV - arg: evNumber: string
 	// query queryEVWithLocation - arg: postalCode int, offset string, city string, cpNumberFrom string, cpNumberTo string 
 	// query createEV - arg: evNumber: string, Manufacturer: string, Model: string, Color: string, ChargingLevel: string, Connector: string, Owner: string, postalCode: int, city: string 
+	// query createEVComplexity - arg: evNumber: string, Manufacturer: string, Model: string, Color: string, ChargingLevel: string, Connector: string, Owner: string, postalCode: int, city: string, n: string, option: string 
 	// query queryAllEVs - arg: n string, option string
 	// query changeEVOwner - arg: evNumber: string, newName: string
 	// query createCP - arg: CPNumber: string, name: string, balance: string
@@ -94,6 +95,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.initLedger(APIstub)
 	} else if function == "createEV" {
 		return s.createEV(APIstub, args)
+	} else if function == "createEVComplexity" {
+		return s.createEVComplexity(APIstub, args)
 	} else if function == "queryAllEVs" {
 		return s.queryAllEVs(APIstub, args[0], args[1])
 	} else if function == "changeEVOwner" {
@@ -384,6 +387,27 @@ func transferFee(APIstub shim.ChaincodeStubInterface, cpNumberFrom string, cpNum
 	APIstub.PutState(cpNumberTo, cpAsBytesTo)
 
 	return 1
+}
+
+// For executing latency test with complexity function
+func (s *SmartContract) createEVComplexity(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 9 {
+		return shim.Error("Expecting 11 arguments")
+	}
+	n:= args[9]
+	option:= args[10]
+
+	// Executing the complexity function
+	GetComplexityFunctionExecuted(n, option)
+
+	postalCode, _:= strconv.Atoi(args[7])
+	var ev = EV{Manufacturer: args[1], Model: args[2], Color: args[3], ChargingLevel: args[4], Connector: args[5], Owner: args[6], PostalCode: postalCode, City: args[8]}
+
+	evAsBytes, _ := json.Marshal(ev)
+	APIstub.PutState(args[0], evAsBytes)
+
+	return shim.Success(nil)
 }
 
 func main() {

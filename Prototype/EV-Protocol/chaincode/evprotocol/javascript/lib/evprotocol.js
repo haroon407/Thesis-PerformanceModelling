@@ -385,6 +385,27 @@ class EVProtocol extends Contract {
         }
     }
 
+    // Test function for write latency with complexity function
+    async createEVComplexity(ctx, evNumber, manufacturer, model, color, chargingLevel, connector, owner, postalCode, city, n, option) {
+        console.info('============= START : Create EV ===========');
+        // Execute complexity function
+        await this.getComplexityFunctionExecuted(n, option);
+        const EV = {
+            color,
+            manufacturer,
+            chargingLevel,
+            connector,
+            postalCode,
+            city,
+            docType: 'E-Vehicle',
+            model,
+            owner
+        };
+
+        await ctx.stub.putState(evNumber, Buffer.from(JSON.stringify(EV)));
+        console.info('============= END : Create EV ===========');
+    }
+
 }
 
 module.exports = EVProtocol;
