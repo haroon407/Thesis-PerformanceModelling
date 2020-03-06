@@ -44,7 +44,7 @@ class EVProtocol extends Contract {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
 
-        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
+        const transferred = await this.transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
 
         if(transferred === 0 ){
             throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
@@ -89,7 +89,7 @@ class EVProtocol extends Contract {
     async queryEVWithLocationForLD(ctx, postalCode, range, city, cpNumberFrom, cpNumberTo) {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
-        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
+        const transferred = await this.transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
 
         if(transferred === 0 ){
             throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
