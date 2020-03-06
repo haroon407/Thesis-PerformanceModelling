@@ -1,4 +1,4 @@
-## Master Thesis, Muhammad Haroon Arshad
+## Muhammad Haroon Arshad (Master's Thesis), Technical University of Munich
 
 ## Hyperledger Fabric v1.4.4
 
