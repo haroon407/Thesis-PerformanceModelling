@@ -22,3 +22,12 @@ This folder contains the results obtained for each parameter
 ### Note: 
 The network setup was built be reusing and extending the Fabric samples under:
 https://github.com/hyperledger/fabric-samples
+https://github.com/keenkit/fabric-sample-with-kafka
+
+
+### Performance Modelling (Folder Structure):
+
+### Prototype (Folder Structure):
+Under Prototype/EV-Protocol/chaincode/evprotocol folder contains chaincode in two languages, GoLang and Javascript
+
+## How to run
