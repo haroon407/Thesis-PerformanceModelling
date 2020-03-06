@@ -16,7 +16,7 @@ This folder contains the networks and clients based on which the performance mod
 ### Prototype: 
 This folder contains the EV-Protocol prototype to verify performance model
 
-### Prototype: 
+### Results: 
 This folder contains the results obtained for each parameter
 
 ### Note: 
