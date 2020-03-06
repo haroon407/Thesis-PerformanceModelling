@@ -3,6 +3,8 @@
  */
 'use strict';
 
+const feeAmount = 50;
+
 const electricVehicles = [
     {
         color: 'blue',
@@ -122,7 +124,11 @@ const chargeProviders = [
     {
         name: 'GeneralChargers',
         balance: 3000000
+    },
+    {
+        name: 'BMW',
+        balance: 0
     }
 ]
 
-module.exports = { electricVehicles: electricVehicles, chargeProviders: chargeProviders, string1: string1, string3: string3, string5: string5, string8: string8, string10: string10, string11: string11 };
+module.exports = { feeAmount: feeAmount, electricVehicles: electricVehicles, chargeProviders: chargeProviders, string1: string1, string3: string3, string5: string5, string8: string8, string10: string10, string11: string11 };

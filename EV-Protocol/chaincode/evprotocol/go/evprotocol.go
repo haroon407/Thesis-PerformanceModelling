@@ -73,14 +73,23 @@ func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
  */
 func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
 
-	// Retrieve the requested Smart Contract function and arguments
+	// Retrieve requested Chaincode functions
 	function, args := APIstub.GetFunctionAndParameters()
-	// Route to the appropriate handler function to interact with the ledger appropriately
+	// Route to specified chaincode function
+	
+	// query EV - arg: evNumber: string
+	// query queryEVWithLocation - arg: postalCode int, offset string, city string, cpNumberFrom string, cpNumberTo string 
+	// query createEV - arg: evNumber: string, Manufacturer: string, Model: string, Color: string, ChargingLevel: string, Connector: string, Owner: string, postalCode: int, city: string 
+	// query queryAllEVs - arg: n string, option string
+	// query changeEVOwner - arg: evNumber: string, newName: string
+	// query createCP - arg: CPNumber: string, name: string, balance: string
+	// query addCPBalance - arg: CPNumber: string, amount: int
+	// query subtractCPBalance - arg: CPNumber: string, amount: string
 	if function == "queryEV" {
 		return s.queryEV(APIstub, args)
 	} else if function == "queryEVWithLocation" { 
 		postalCode, _ := strconv.Atoi(args[0])
-		return s.queryEVWithLocation(APIstub, postalCode, args[1], args[2], args[3])
+		return s.queryEVWithLocation(APIstub, postalCode, args[1], args[2], args[3], args[4])
 	} else if function == "initLedger" {
 		return s.initLedger(APIstub)
 	} else if function == "createEV" {
@@ -127,6 +136,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 	cps := []CP{
 		CP{Name: "BavariaChargers", Balance: 1000000},
 		CP{Name: "GeneralChargers", Balance: 3000000},
+		CP{Name: "BMW", Balance: 0},
 	}
 
 	i := 0
@@ -206,26 +216,18 @@ func (s *SmartContract) queryAllEVs(APIstub shim.ChaincodeStubInterface, n strin
 	return shim.Success(buffer.Bytes())
 }
 
-func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface, postalCode int, offset string, city string, cpNumber string) sc.Response {
+func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface, postalCode int, offset string, city string, cpNumberFrom string, cpNumberTo string) sc.Response {
 	
 	offsetInt, _:= strconv.Atoi(offset)
 	lowerRange := postalCode - offsetInt
 	upperRange := postalCode + offsetInt
-	feeAmount := 500000
 
-	// Deducting fee and updating CP
-	cpAsBytes, _ := APIstub.GetState(cpNumber)
-	cp := CP{}
-	json.Unmarshal(cpAsBytes, &cp)
-	
-	if cp.Balance - feeAmount < 0 {
-		return shim.Error(cpNumber + " does not have enough balance for this transaction")
+	// Transferring fee and updating CPs
+	success := transferFee(APIstub, cpNumberFrom, cpNumberTo, feeAmount)
+
+	if success == 0 {
+		return shim.Error("Error while trasferring funds for transaction, Make sure there is enough balance to execute this transaction")
 	}
-
-	cp.Balance = cp.Balance - feeAmount
-
-	cpAsBytes, _ = json.Marshal(cp)
-	APIstub.PutState(cpNumber, cpAsBytes)
 
 	// Preparing query
 	stringQuery := `{
@@ -356,6 +358,32 @@ func (s *SmartContract) subtractCPBalance(APIstub shim.ChaincodeStubInterface, a
 	APIstub.PutState(args[0], cpAsBytes)
 
 	return shim.Success(nil)
+}
+
+func transferFee(APIstub shim.ChaincodeStubInterface, cpNumberFrom string, cpNumberTo string, feeAmount int) int {
+	// cpNumberFrom := []byte(transferFrom)
+	// cpNumberTo := []byte(transferTo)
+	
+	cpAsBytesFrom, _ := APIstub.GetState(cpNumberFrom)
+	cpAsBytesTo, _ := APIstub.GetState(cpNumberTo)
+	cpFrom := CP{}
+	cpTo := CP{}
+	json.Unmarshal(cpAsBytesFrom, &cpFrom)
+	json.Unmarshal(cpAsBytesTo, &cpTo)
+	
+	if cpFrom.Balance - feeAmount < 0 {
+		return 0
+	}
+
+	cpFrom.Balance = cpFrom.Balance - feeAmount
+	cpTo.Balance = cpTo.Balance + feeAmount
+
+	cpAsBytesFrom, _ = json.Marshal(cpFrom)
+	cpAsBytesTo, _ = json.Marshal(cpTo)
+	APIstub.PutState(cpNumberFrom, cpAsBytesFrom)
+	APIstub.PutState(cpNumberTo, cpAsBytesTo)
+
+	return 1
 }
 
 func main() {
