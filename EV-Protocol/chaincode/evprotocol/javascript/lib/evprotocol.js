@@ -28,6 +28,8 @@ class EVProtocol extends Contract {
 
 
     // Function for Electric Vehicles
+
+    // Query Electric vehicle using ev-number
     async queryEV(ctx, evNumber) {
         const evAsBytes = await ctx.stub.getState(evNumber);
         if (!evAsBytes || evAsBytes.length === 0) {
@@ -38,22 +40,28 @@ class EVProtocol extends Contract {
     }
 
     // Postal code is the central area and range decides the +-factor to obtain EVs related to that area
-    async queryEVWithLocation(ctx, postalCode, range, city) {
+    async queryEVWithLocation(ctx, postalCode, range, city, cpNumberFrom, cpNumberTo) {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
+
+        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
+
+        if(transferred === 0 ){
+            throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
+        }
+
         const stringQuery = `{
             "selector": {
                "postalCode": {
-                  "$gte": `+ upperRange + `
+                  "$gte": `+ lowerRange + `,
+                  "$lte": `+ upperRange + `
                },
-               "postalCode": {
-                "$lte": `+ lowerRange + `
-            },
-            "city": {
-                "$eq": `+ city + `
+               "city": {
+                   "$eq": "`+ city + `"` + `
+                }
             }
-            }
-         }`
+         }`;
+
         const iterator = await ctx.stub.getQueryResult(stringQuery);
         const allResults = [];
         while (true) {
@@ -78,13 +86,19 @@ class EVProtocol extends Contract {
     }
 
     // For LevelDB
-    async queryEVWithLocationForLD(ctx, postalCode, range, city) {
+    async queryEVWithLocationForLD(ctx, postalCode, range, city, cpNumberFrom, cpNumberTo) {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
-        const startKey = 'EV0';
-        const endKey = 'EV9999';
+        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
 
-        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+        if(transferred === 0 ){
+            throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
+        }
+
+        const keyStart = 'EV0';
+        const keyEnd = 'EV9999';
+
+        const iterator = await ctx.stub.getStateByRange(keyStart, keyEnd);
         let result = {};
         let Key;
         let Record;
@@ -112,6 +126,7 @@ class EVProtocol extends Contract {
         }
     }
 
+    // Create EV
     async createEV(ctx, evNumber, manufacturer, model, color, chargingLevel, connector, owner, postalCode, city) {
         console.info('============= START : Create EV ===========');
         const EV = {
@@ -131,11 +146,11 @@ class EVProtocol extends Contract {
     }
 
     // for complexity functions add arguments n, option
-    async queryAllEVs(ctx) {
-        const startKey = 'EV0';
-        const endKey = 'EV9999';
+    async queryAllEVs(ctx, n, option) {
+        const keyStart = 'EV0';
+        const keyEnd = 'EV9999';
 
-        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+        const iterator = await ctx.stub.getStateByRange(keyStart, keyEnd);
 
         // Execute complexity function
         // this.getComplexityFunctionExecuted(n, option);
@@ -169,7 +184,6 @@ class EVProtocol extends Contract {
 
     async changeEVOwner(ctx, EVNumber, newOwner) {
         console.info('============= START : changeEVOwner ===========');
-        console.log('got:' + EVNumber + ' - ' + newOwner);
 
         const evAsBytes = await ctx.stub.getState(EVNumber);
         if (!evAsBytes || evAsBytes.length === 0) {
@@ -207,22 +221,24 @@ class EVProtocol extends Contract {
         return evAsBytes.toString();
     }
 
-    async createCP(ctx, cpNumber, name, credit) {
+    // Create a charge provider
+    async createCP(ctx, cpNumber, name, balance) {
         console.info('============= START : Create CP ===========');
         const CP = {
             name,
-            credit
+            balance
         };
 
         await ctx.stub.putState(cpNumber, Buffer.from(JSON.stringify(CP)));
         console.info('============= END : Create CP ===========');
     }
 
+    // Query all charge provider
     async queryAllCPs(ctx) {
-        const startKey = 'CP0';
-        const endKey = 'CP9999';
+        const keyStart = 'CP0';
+        const keyEnd = 'CP9999';
 
-        const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+        const iterator = await ctx.stub.getStateByRange(keyStart, keyEnd);
 
         const allResults = [];
         while (true) {
@@ -247,6 +263,7 @@ class EVProtocol extends Contract {
         }
     }
 
+    // Change charge provider name
     async changeCPName(ctx, CPNumber, newCPName) {
         console.info('============= START : changeCPName ===========');
 
@@ -255,10 +272,71 @@ class EVProtocol extends Contract {
             throw new Error(`${CPNumber} does not exist`);
         }
         const cp = JSON.parse(cpAsBytes.toString());
-        cp.owner = newOwner;
-        console.log('updated name:' + cp.name + ' - ' + cp.credit);
+        cp.name = newCPName;
+        console.log('updated name:' + cp.name + ' - ' + cp.balance);
         await ctx.stub.putState(CPNumber, Buffer.from(JSON.stringify(cp)));
         console.info('============= END : changeCPName ===========');
+    }
+
+    // Add charge provider balance
+    async addCPBalance(ctx, CPNumber, amount) {
+        console.info('============= START : changeCPName ===========');
+
+        const cpAsBytes = await ctx.stub.getState(CPNumber);
+
+        if (!cpAsBytes || cpAsBytes.length === 0) {
+            throw new Error(`${CPNumber} does not exist`);
+        }
+
+        const cp = JSON.parse(cpAsBytes.toString());
+        cp.balance += amount;
+        console.log('updated balance:' + cp.name + ' - ' + cp.balance);
+        await ctx.stub.putState(CPNumber, Buffer.from(JSON.stringify(cp)));
+        console.info('============= END : changeCPName ===========');
+    }
+
+    // Reduce charge provider balance
+    async subtractCPBalance(ctx, CPNumber, amount) {
+        console.info('============= START : changeCPName ===========');
+
+        const cpAsBytes = await ctx.stub.getState(CPNumber);
+        if (!cpAsBytes || cpAsBytes.length === 0) {
+            throw new Error(`${CPNumber} does not exist`);
+        }
+
+        const cp = JSON.parse(cpAsBytes.toString());
+
+        if(cp.balance - amount > 0){
+            cp.balance -= amount;
+        } else {
+            throw new Error(`${CPNumber} does not have enough balance`);
+        }
+
+        cp.name = newCPName;
+        console.log('updated name:' + cp.name + ' - ' + cp.balance);
+        await ctx.stub.putState(CPNumber, Buffer.from(JSON.stringify(cp)));
+        console.info('============= END : changeCPName ===========');
+    }
+
+    async transferFee(ctx, cpNumberFrom, cpNumberTo, amount) {
+        const cpFromAsBytes = await ctx.stub.getState(cpNumberFrom);
+        const cpToAsBytes = await ctx.stub.getState(cpNumberTo);
+        if (!cpFromAsBytes || cpFromAsBytes.length === 0 || !cpToAsBytes || cpToAsBytes.length === 0) {
+            return 0;
+        }
+        const cpFrom = JSON.parse(cpFromAsBytes.toString());
+        const cpTo = JSON.parse(cpToAsBytes.toString());
+
+        if(cpFrom.balance - amount < 0){
+            return 0;
+        } else {
+            cpFrom.balance = cpFrom.balance - amount;
+            cpTo.balance = cpTo.balance + amount;
+            await ctx.stub.putState(cpNumberFrom, Buffer.from(JSON.stringify(cpFrom)));
+            await ctx.stub.putState(cpNumberTo, Buffer.from(JSON.stringify(cpTo)));
+            return 1;
+        }
+
     }
 
     // Delete function
@@ -270,7 +348,7 @@ class EVProtocol extends Contract {
 
     async getComplexityFunctionExecuted(n, option) {
         let stringArr;
-        if (n === "10") {
+        if (n === "1") {
             console.log("got n: 1");
             stringArr = DummyData.string1;
             await this.executeFunction(option, stringArr);
