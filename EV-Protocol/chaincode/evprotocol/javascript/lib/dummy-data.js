@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const feeAmount = 50;
+const feeAmount = 500000;
 
 const electricVehicles = [
     {

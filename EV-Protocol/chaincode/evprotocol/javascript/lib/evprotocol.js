@@ -40,9 +40,16 @@ class EVProtocol extends Contract {
     }
 
     // Postal code is the central area and range decides the +-factor to obtain EVs related to that area
-    async queryEVWithLocation(ctx, postalCode, range, city) {
+    async queryEVWithLocation(ctx, postalCode, range, city, cpNumberFrom, cpNumberTo) {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
+
+        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
+
+        if(transferred === 0 ){
+            throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
+        }
+
         const stringQuery = `{
             "selector": {
                "postalCode": {
@@ -78,9 +85,15 @@ class EVProtocol extends Contract {
     }
 
     // For LevelDB
-    async queryEVWithLocationForLD(ctx, postalCode, range, city) {
+    async queryEVWithLocationForLD(ctx, postalCode, range, city, cpNumberFrom, cpNumberTo) {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
+        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
+
+        if(transferred === 0 ){
+            throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
+        }
+
         const keyStart = 'EV0';
         const keyEnd = 'EV9999';
 
@@ -269,13 +282,13 @@ class EVProtocol extends Contract {
         console.info('============= START : changeCPName ===========');
 
         const cpAsBytes = await ctx.stub.getState(CPNumber);
+
         if (!cpAsBytes || cpAsBytes.length === 0) {
             throw new Error(`${CPNumber} does not exist`);
         }
+
         const cp = JSON.parse(cpAsBytes.toString());
-        console.log('before: ' + cp.balance);
         cp.balance += amount;
-        console.log('after: ' + cp.balance);
         console.log('updated balance:' + cp.name + ' - ' + cp.balance);
         await ctx.stub.putState(CPNumber, Buffer.from(JSON.stringify(cp)));
         console.info('============= END : changeCPName ===========');
@@ -290,19 +303,39 @@ class EVProtocol extends Contract {
             throw new Error(`${CPNumber} does not exist`);
         }
 
+        const cp = JSON.parse(cpAsBytes.toString());
+
         if(cp.balance - amount > 0){
-            console.log('before: ' + cp.balance);
             cp.balance -= amount;
-            console.log('after: ' + cp.balance);
         } else {
             throw new Error(`${CPNumber} does not have enough balance`);
         }
 
-        const cp = JSON.parse(cpAsBytes.toString());
         cp.name = newCPName;
         console.log('updated name:' + cp.name + ' - ' + cp.balance);
         await ctx.stub.putState(CPNumber, Buffer.from(JSON.stringify(cp)));
         console.info('============= END : changeCPName ===========');
+    }
+
+    async transferFee(ctx, cpNumberFrom, cpNumberTo, amount) {
+        const cpFromAsBytes = await ctx.stub.getState(cpNumberFrom);
+        const cpToAsBytes = await ctx.stub.getState(cpNumberTo);
+        if (!cpFromAsBytes || cpFromAsBytes.length === 0 || !cpToAsBytes || cpToAsBytes.length === 0) {
+            return 0;
+        }
+        const cpFrom = JSON.parse(cpFromAsBytes.toString());
+        const cpTo = JSON.parse(cpToAsBytes.toString());
+
+        if(cpFrom.balance - amount < 0){
+            return 0;
+        } else {
+            cpFrom.balance = cpFrom.balance - amount;
+            cpTo.balance = cpTo.balance + amount;
+            await ctx.stub.putState(cpNumberFrom, Buffer.from(JSON.stringify(cpFrom)));
+            await ctx.stub.putState(cpNumberTo, Buffer.from(JSON.stringify(cpTo)));
+            return 1;
+        }
+
     }
 
     // Delete function
