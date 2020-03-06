@@ -392,7 +392,7 @@ func transferFee(APIstub shim.ChaincodeStubInterface, cpNumberFrom string, cpNum
 // For executing latency test with complexity function
 func (s *SmartContract) createEVComplexity(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 9 {
+	if len(args) != 11 {
 		return shim.Error("Expecting 11 arguments")
 	}
 	n:= args[9]
