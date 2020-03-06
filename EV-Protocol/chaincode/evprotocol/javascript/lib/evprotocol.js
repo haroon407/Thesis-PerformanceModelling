@@ -60,7 +60,8 @@ class EVProtocol extends Contract {
                    "$eq": "`+ city + `"` + `
                 }
             }
-         }`
+         }`;
+
         const iterator = await ctx.stub.getQueryResult(stringQuery);
         const allResults = [];
         while (true) {
@@ -88,11 +89,11 @@ class EVProtocol extends Contract {
     async queryEVWithLocationForLD(ctx, postalCode, range, city, cpNumberFrom, cpNumberTo) {
         const upperRange = postalCode + range;
         const lowerRange = postalCode - range;
-        const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
+        // const transferred = await transferFee(ctx, cpNumberFrom, cpNumberTo, DummyData.feeAmount);
 
-        if(transferred === 0 ){
-            throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
-        }
+        // if(transferred === 0 ){
+        //     throw new Error(`Error transferring fee, Make sure there is enough balance in account`);
+        // }
 
         const keyStart = 'EV0';
         const keyEnd = 'EV9999';
@@ -317,26 +318,26 @@ class EVProtocol extends Contract {
         console.info('============= END : changeCPName ===========');
     }
 
-    async transferFee(ctx, cpNumberFrom, cpNumberTo, amount) {
-        const cpFromAsBytes = await ctx.stub.getState(cpNumberFrom);
-        const cpToAsBytes = await ctx.stub.getState(cpNumberTo);
-        if (!cpFromAsBytes || cpFromAsBytes.length === 0 || !cpToAsBytes || cpToAsBytes.length === 0) {
-            return 0;
-        }
-        const cpFrom = JSON.parse(cpFromAsBytes.toString());
-        const cpTo = JSON.parse(cpToAsBytes.toString());
+    // async transferFee(ctx, cpNumberFrom, cpNumberTo, amount) {
+    //     const cpFromAsBytes = await ctx.stub.getState(cpNumberFrom);
+    //     const cpToAsBytes = await ctx.stub.getState(cpNumberTo);
+    //     if (!cpFromAsBytes || cpFromAsBytes.length === 0 || !cpToAsBytes || cpToAsBytes.length === 0) {
+    //         return 0;
+    //     }
+    //     const cpFrom = JSON.parse(cpFromAsBytes.toString());
+    //     const cpTo = JSON.parse(cpToAsBytes.toString());
 
-        if(cpFrom.balance - amount < 0){
-            return 0;
-        } else {
-            cpFrom.balance = cpFrom.balance - amount;
-            cpTo.balance = cpTo.balance + amount;
-            await ctx.stub.putState(cpNumberFrom, Buffer.from(JSON.stringify(cpFrom)));
-            await ctx.stub.putState(cpNumberTo, Buffer.from(JSON.stringify(cpTo)));
-            return 1;
-        }
+    //     if(cpFrom.balance - amount < 0){
+    //         return 0;
+    //     } else {
+    //         cpFrom.balance = cpFrom.balance - amount;
+    //         cpTo.balance = cpTo.balance + amount;
+    //         await ctx.stub.putState(cpNumberFrom, Buffer.from(JSON.stringify(cpFrom)));
+    //         await ctx.stub.putState(cpNumberTo, Buffer.from(JSON.stringify(cpTo)));
+    //         return 1;
+    //     }
 
-    }
+    // }
 
     // Delete function
     async deleteCP(ctx, CPNumber) {
