@@ -21,8 +21,10 @@ This folder contains the results obtained for each parameter
 
 ### Note: 
 The network setup was built be reusing and extending the Fabric samples under:
-https://github.com/hyperledger/fabric-samples
-https://github.com/keenkit/fabric-sample-with-kafka
+
+#### https://github.com/hyperledger/fabric-samples
+
+#### https://github.com/keenkit/fabric-sample-with-kafka
 
 
 ### Performance Modelling (Folder Structure):
