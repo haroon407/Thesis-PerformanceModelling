@@ -10,11 +10,15 @@ The hyperledger Fabric v1.4.4 was downloaded using the following command:
 For further instructions please follow the installation guide at http://hyperledger-fabric.readthedocs.io/en/latest/install.html
 
 ## Folder structure
-### Performance Modelling: This folder contains the networks and clients based on which the performance modelling was performed.
+### Performance Modelling: 
+This folder contains the networks and clients based on which the performance modelling was performed.
 
-### Prototype: This folder contains the EV-Protocol prototype to verify performance model
+### Prototype: 
+This folder contains the EV-Protocol prototype to verify performance model
 
-### Prototype: This folder contains the results obtained for each parameter
+### Prototype: 
+This folder contains the results obtained for each parameter
 
-### Note: The network setup was built be reusing and extending the Fabric samples under:
+### Note: 
+The network setup was built be reusing and extending the Fabric samples under:
 https://github.com/hyperledger/fabric-samples
