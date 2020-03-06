@@ -36,33 +36,9 @@ async function main() {
         // Get the contract from the network.
         const contract = network.getContract('evprotocol');
 
-        // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR10', 'Dave')
+        // Submit a specific transaction, For now submitting complexity testing function
 
         console.log("==============    " + moment.utc(moment.now()).format("HH:mm:ss.SSS") + "    ==============");
-        // await contract.submitTransaction('createCar', 'CAR10', 'Toyota', 'Hilux', 'green', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR11', 'Toyota', 'LandCruiser', 'silver', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR12', 'Toyota', 'FJ Cruiser', 'yellow', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR13', 'Honda', 'Civic', 'gold', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR14', 'Honda', 'Accord', 'blue', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR15', 'Toyota', 'Corolla', 'red', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR16', 'Honda', 'Vezel', 'white', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR17', 'Honda', 'CRV', 'black', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR18', 'Honda', 'Civic', 'gold', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR19', 'Honda', 'City', 'blue', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR20', 'Toyota', 'Camry', 'red', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR21', 'Honda', 'BRV', 'white', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR22', 'Honda', 'MRV', 'black', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR23', 'Honda', 'Fit', 'blue', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR24', 'Toyota', 'Prado', 'silver', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR25', 'Honda', 'Brio', 'white', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR26', 'Honda', 'Pilot', 'black', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR27', 'Toyota', 'Crown', 'gold', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR28', 'Toyota', 'Mark X', 'green', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR29', 'Toyota', 'Premio', 'red', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR30', 'Toyota', 'Hilux', 'black', 'Tom');
-        // await contract.submitTransaction('createCar', 'CAR31', 'Toyota', 'Fortuner', 'white', 'Tom');
 
         let colorArray = [
             'green',
@@ -77,16 +53,23 @@ async function main() {
             'brown',
             'maroon',
         ];
-        let carArray = [
-            'Toyota',
-            'Honda',
-            'Chevrolet',
-            'Suzuki',
-            'BMW',
-            'Audi',
-            'GMC',
-            'Opel',
-            'Mercedes'
+        let postalCodes = [
+            81340,
+            81341,
+            81342,
+            81343,
+            81344,
+            81345,
+            81346,
+            81347,
+            81348,
+            81349,
+            81350,
+            81351,
+            81352,
+            81353,
+            81354,
+            81355
         ];
         let ownerArray = [
             'Paul',
@@ -97,30 +80,38 @@ async function main() {
             'Trevor',
             'Philip'
         ]
+        let modelArray = [
+            'i3',
+            'i8'
+        ]
+        let connectorTypesArray = [
+            'Type-F-(Schuko)',
+            'Type-2',
+            'Combo-CCS'
+        ]
+        let chargingLevelsArray = [
+            '1',
+            '2',
+            '3'
+        ]
 
         let randomColor;
-        let randomCar;
+        let randomModel;
         let randomOwner;
-        for (let i = 100; i < 1030; i++) {
+        let randomPostalCode;
+        let chargingLevel;
+        let connectorType;
+        let city = 'Munich';
+        let manufacturer = 'BMW';
+        for (let i = 130; i < 140; i++) {
             randomColor = Math.floor(Math.random() * colorArray.length);
-            randomCar = Math.floor(Math.random() * carArray.length);
             randomOwner = Math.floor(Math.random() * ownerArray.length);
-            if (i === 807) {
-               await contract.submitTransaction('createCar', 'CAR' + i, 'Toyota', 'Hilux', 'black', 'Harry');
-            }
-            // if (i === 82) {
-            //     await contract.submitTransaction('createCar', 'CAR' + i, 'Toyota', 'FJ Cruiser', colorArray[randomColor], 'Tom');
-            // } else if (i === 87) {
-            //     await contract.submitTransaction('createCar', 'CAR' + i, 'Toyota', 'Hilux', 'black', 'Harry');
-            // } else {
-            //     await contract.submitTransaction('createCar', 'CAR' + i, carArray[randomCar], 'SubModel' + i, colorArray[randomColor], ownerArray[randomOwner]);
-            // }
-            console.log('index ---- > ' + i);
-            await contract.submitTransaction('createCar', 'CAR' + i, carArray[randomCar], 'SubModel' + i, colorArray[randomColor], ownerArray[randomOwner]);
+            randomModel = Math.floor(Math.random() * modelArray.length);
+            randomPostalCode = Math.floor(Math.random() * postalCodes.length);
+            chargingLevel = Math.floor(Math.random() * chargingLevelsArray.length);
+            connectorType = Math.floor(Math.random() * connectorTypesArray.length);
+            await contract.submitTransaction('createEVComplexity', 'EV' + i, manufacturer, modelArray[randomModel], colorArray[randomColor],chargingLevelsArray[chargingLevel], connectorTypesArray[connectorType], ownerArray[randomOwner], postalCodes[randomPostalCode].toString(), city, "10", "1");
         }
-        // await contract.submitTransaction('createCar', 'CAR224', 'Toyota', 'Hilux', 'black', 'Harry');
-
-        // await contract.submitTransaction('changeCarOwner', 'CAR12', 'Jerry');
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
