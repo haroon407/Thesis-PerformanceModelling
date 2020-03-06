@@ -33,3 +33,9 @@ The network setup was built be reusing and extending the Fabric samples under:
 Under Prototype/EV-Protocol/chaincode/evprotocol folder contains chaincode in two languages, GoLang and Javascript
 
 ## How to run
+
+## Prototype Setup 1:
+Golang Chaincode, Raft ordering service with 7 peers, couchDB, endorsement policy (AND with 2 endorsers), MaxMessageCount: 100, BatchTimeout: 20s
+
+## Prototype Setup 2:
+Javascript Chaincode, Raft ordering service with 5 peers, levelDB, endorsement policy (nOutOf with 2 endorsers), MaxMessageCount: 100, BatchTimeout: 20s

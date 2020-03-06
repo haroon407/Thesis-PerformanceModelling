@@ -86,8 +86,9 @@ docker exec \
     --peerAddresses peer0.org1.example.com:7051 \
     --tlsRootCertFiles ${ORG1_TLS_ROOTCERT_FILE}
 
+# Should be greater than the value of BatchTimeout under configtx.yaml
 echo "Waiting for instantiation request to be committed ..."
-sleep 10
+sleep 30
 
 echo "Submitting initLedger transaction to smart contract on evchannel"
 echo "The transaction is sent to the two peers with the chaincode installed (peer0.org1.example.com and peer0.org2.example.com) so that chaincode is built before receiving the following requests"
