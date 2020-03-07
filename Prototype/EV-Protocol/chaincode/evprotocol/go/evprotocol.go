@@ -296,7 +296,8 @@ func (s *SmartContract) changeEVLocation(APIstub shim.ChaincodeStubInterface, ar
 	ev := EV{}
 
 	json.Unmarshal(evAsBytes, &ev)
-	ev.PostalCode, _:= strconv.Atoi(args[1])
+	postalCodeInt, _:= strconv.Atoi(args[1])
+	ev.PostalCode = postalCodeInt
 	ev.City = args[2]
 
 	evAsBytes, _ = json.Marshal(ev)
