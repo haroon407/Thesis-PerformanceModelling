@@ -68,6 +68,8 @@ docker exec \
     -p "$CC_SRC_PATH" \
     -l "$CC_RUNTIME_LANGUAGE"
 
+# endorsement policy for nOutOf is "OutOf(2, 'Org1.member', 'Org2.member')"
+# endorsement policy for AND is "AND('Org1MSP.member','Org2MSP.member')"
 echo "Instantiating smart contract on evchannel"
 docker exec \
   -e CORE_PEER_LOCALMSPID=Org1MSP \

@@ -182,32 +182,26 @@ class EVProtocol extends Contract {
         }
     }
 
-    async changeEVOwner(ctx, EVNumber, newOwner) {
-        console.info('============= START : changeEVOwner ===========');
+    async changeEVLocation(ctx, EVNumber, newPostalCode, newCity) {
+        console.info('============= START : changeEVLocation ===========');
 
         const evAsBytes = await ctx.stub.getState(EVNumber);
         if (!evAsBytes || evAsBytes.length === 0) {
             throw new Error(`${EVNumber} does not exist`);
         }
         const ev = JSON.parse(evAsBytes.toString());
-        ev.owner = newOwner;
-        console.log('updated owner:' + ev.owner + ' - ' + ev.model);
+        ev.postalCode = newPostalCode;
+        ev.city = newCity;
+        console.log('updated location:' + ev.city + ' - ' + ev.postalCode);
         await ctx.stub.putState(EVNumber, Buffer.from(JSON.stringify(ev)));
-        console.info('============= END : changeEVOwner ===========');
+        console.info('============= END : changeEVLocation ===========');
     }
 
     // Delete function for CouchDB
-    async deleteEVCD(ctx, EVNumber) {
-        console.info('============= START : deleteEVCD ===========');
+    async deleteEV(ctx, EVNumber) {
+        console.info('============= START : deleteEV ===========');
         await ctx.stub.deleteState(EVNumber);
-        console.info('============= END : deleteEVCD ===========');
-    }
-
-    // Delete function for LevelDB
-    async deleteEVLD(ctx, EVNumber) {
-        console.info('============= START : deleteEVLD ===========');
-        await ctx.stub.deleteState(EVNumber);
-        console.info('============= END : deleteEVLD ===========');
+        console.info('============= END : deleteEV ===========');
     }
 
 

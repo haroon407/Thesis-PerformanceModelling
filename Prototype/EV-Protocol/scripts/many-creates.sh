@@ -7,7 +7,7 @@ connectorTypes=('Type-F-(Schuko)' 'Type-2' 'Combo-CCS');
 chargingLevels=('1' '2' '3');
 model=('i3' 'i8');
 echo $(date)
-for (( i = 0; i < 2; ++i ));
+for (( i = 0; i < 1000; ++i ));
 do
 	evNumber="EV$RANDOM";
 	manufacturer="BMW";

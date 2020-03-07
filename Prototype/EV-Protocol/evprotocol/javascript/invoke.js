@@ -21,8 +21,7 @@ async function main() {
         // Check to see if we've already enrolled the user.
         const userExists = await wallet.exists('user1');
         if (!userExists) {
-            console.log('An identity for the user "user1" does not exist in the wallet');
-            console.log('Run the registerUser.js application before retrying');
+            console.log('User identity does not exist, run the registerUser.js ');
             return;
         }
 
@@ -103,7 +102,9 @@ async function main() {
         let connectorType;
         let city = 'Munich';
         let manufacturer = 'BMW';
-        for (let i = 130; i < 140; i++) {
+
+        // Since first 10 cars are already created using chaincode init
+        for (let i = 10; i < 20; i++) {
             randomColor = Math.floor(Math.random() * colorArray.length);
             randomOwner = Math.floor(Math.random() * ownerArray.length);
             randomModel = Math.floor(Math.random() * modelArray.length);

@@ -82,7 +82,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	// query createEV - arg: evNumber: string, Manufacturer: string, Model: string, Color: string, ChargingLevel: string, Connector: string, Owner: string, postalCode: int, city: string 
 	// query createEVComplexity - arg: evNumber: string, Manufacturer: string, Model: string, Color: string, ChargingLevel: string, Connector: string, Owner: string, postalCode: int, city: string, n: string, option: string 
 	// query queryAllEVs - arg: n string, option string
-	// query changeEVOwner - arg: evNumber: string, newName: string
+	// query changeEVLocation - arg: evNumber: string, newPostalCode: string, newCity: string
 	// query createCP - arg: CPNumber: string, name: string, balance: string
 	// query addCPBalance - arg: CPNumber: string, amount: int
 	// query subtractCPBalance - arg: CPNumber: string, amount: string
@@ -99,8 +99,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.createEVComplexity(APIstub, args)
 	} else if function == "queryAllEVs" {
 		return s.queryAllEVs(APIstub, args[0], args[1])
-	} else if function == "changeEVOwner" {
-		return s.changeEVOwner(APIstub, args)
+	} else if function == "changeEVLocation" {
+		return s.changeEVLocation(APIstub, args)
 	} else if function == "createCP" {
 		return s.createCP(APIstub, args)
 	} else if function == "addCPBalance" {
@@ -286,17 +286,18 @@ func (s *SmartContract) queryEVWithLocation(APIstub shim.ChaincodeStubInterface,
 	return shim.Success(buffer.Bytes())
 }
 
-func (s *SmartContract) changeEVOwner(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+func (s *SmartContract) changeEVLocation(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 2 {
-		return shim.Error("Expecting 2 arguments")
+	if len(args) != 3 {
+		return shim.Error("Expecting 3 arguments")
 	}
 
 	evAsBytes, _ := APIstub.GetState(args[0])
 	ev := EV{}
 
 	json.Unmarshal(evAsBytes, &ev)
-	ev.Owner = args[1]
+	ev.PostalCode = args[1]
+	ev.City = args[2]
 
 	evAsBytes, _ = json.Marshal(ev)
 	APIstub.PutState(args[0], evAsBytes)
