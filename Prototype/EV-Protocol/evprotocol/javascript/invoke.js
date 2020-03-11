@@ -103,7 +103,7 @@ async function main() {
         let city = 'Munich';
         let manufacturer = 'BMW';
 
-        // Since first 10 cars are already created using chaincode init
+        // Since first 10 cars are already created using chaincode init, creating 10 more cars
         for (let i = 10; i < 20; i++) {
             randomColor = Math.floor(Math.random() * colorArray.length);
             randomOwner = Math.floor(Math.random() * ownerArray.length);
