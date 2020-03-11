@@ -87,3 +87,23 @@ To change endorsement policy for nOutOf expression, within the same file and lin
 - '/Performance Modelling/fabcar-kafka/' consists of client for 2 organizations with 2 peers each and with Kafka orderering service with one orderer. '/Performance Modelling/fabric-kafka/' consists of the network code for respective architecture.
 - '/Performance Modelling/fabcar-raft/' consists of client for 2 organizations with 2 peers each and with Raft orderering service with seven orderer. '/Performance Modelling/first-network-raft/' consists of the network code for respective architecture.
 - '/Performance Modelling/fabcar-three-org/' consists of client for 3 organizations with 2 peers each and with solo orderer. '/Performance Modelling/three-org-network/' consists of the network code for respective architecture.
+
+## How to run Performance Modelling (OSX)
+
+### Step 1: Start network (OSX)
+1. First of all make sure Hyperledger Fabric v1.4.4 environment is setup 
+2. In order to run any of the networks mentioned in 'Performance Modelling (Folder Structure)' section, open cmd and navigate to its respective client folder. For instance for network with raft ordering service open cmd and navigate to '/Performance Modelling/fabcar-raft/'.
+3. In order to start the network using GoLang chaincode use command `./startFabric.sh go`
+4. In order to start the network using Javascript chaincode use command `./startFabric.sh javascript`
+5. In order to start the network using Java chaincode use command `./startFabric.sh java`
+6. In order to start the network using Typescript chaincode use command `./startFabric.sh typescript`
+
+### Step 2: Using Javascript client to interact with the network (OSX)
+1. Once the network is up, there are clients implemented in java, javascript, typescript and javascript-low-level. Throughout performance modeling we only used the Javascript client irrespective of chaincode language.
+2. In order to execute javascript client, open cmd and navigate to respective client's javascript folder. For instance since we are running network with raft ordering service as per Step 1 instructions, so we have to open cmd and navigate to '/Performance Modelling/fabcar-raft/javascript/' folder.
+3. Execute `rm -rf wallet` to remove any previous user keys stored in wallet
+4. Execute `node enrollAdmin.js` to enroll the admin on the network
+5. Execute `node registerUser.js` to register the user on the network
+6. Execute `node query.js` to query the chaincode 'queryAllCars' function with argument for complexity function '10' and '1' 
+7. Execute `node invoke.js` to create 10 random Cars.
+8. The chaincode function and arguments details can be seen in the '/Performance Modelling/fabcar_documentation.md' and therefore the query.js or invoke.js can be updated accordingly to execute required chaincode function with respective parameters.
