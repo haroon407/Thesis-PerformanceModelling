@@ -16,9 +16,6 @@ This folder contains the networks and clients based on which the performance mod
 ### Prototype: 
 This folder contains the EV-Protocol prototype to verify performance model
 
-### Results: 
-This folder contains the results obtained for each parameter
-
 ### Note: 
 The network setup was built be reusing and extending the Fabric samples under:
 
@@ -32,7 +29,10 @@ The network setup was built be reusing and extending the Fabric samples under:
 ### Prototype (Folder Structure):
 Under Prototype/EV-Protocol/chaincode/evprotocol folder contains chaincode in two languages, GoLang and Javascript
 
-## How to run
+## How to run the prototype
+
+1. First of all make sure Hyperledger Fabric v1.4.4 environment is setup 
+2. 
 
 ## Prototype Setup 1:
 Golang Chaincode, Raft ordering service with 7 peers, couchDB, endorsement policy (AND with 2 endorsers), MaxMessageCount: 100, BatchTimeout: 20s
