@@ -24,10 +24,13 @@ The network setup was built be reusing and extending the Fabric samples under:
 #### https://github.com/keenkit/fabric-sample-with-kafka
 
 
-### Performance Modelling (Folder Structure):
-
 ### Prototype (Folder Structure):
-Under Prototype/EV-Protocol/chaincode/evprotocol folder contains chaincode in two languages, GoLang and Javascript
+- 'Prototype/EV-Protocol/chaincode/evprotocol' folder contains chaincode in two languages, GoLang and Javascript
+- 'Prototype/EV-Protocol/bin' folder contains binaries used for the network
+- 'Prototype/EV-Protocol/evprotocol/' folder contains script to start the network
+- 'Prototype/EV-Protocol/evprotocol/javascript/' folder contains NodeJS client to interact with the network
+- 'Prototype/EV-Protocol/network-raft/' folder contains the Hyperledger Fabric network code
+- 'Prototype/EV-Protocol/scripts/' folder contains the scripts files for running load test
 
 ## How to run the prototype (OSX)
 
@@ -69,3 +72,18 @@ Javascript Chaincode, Raft ordering service with 5 peers, levelDB, endorsement p
 4. To Reduce number of ordering peers from 7 to 5, once the network is up, execute command 'docker kill orderer3.example.com' and 'docker kill orderer4.example.com' to kill orderer 3 and 4 respectively.
 5. To change endorsement policy for AND/OR expression go to 'Prototype/EV-Protocol/evprotocol/startFabric.sh'. and type '"AND('Org1MSP.member','Org2MSP.member')"' as an argument for '-P' flag on line 85.
 To change endorsement policy for nOutOf expression, within the same file and lines, type '"OutOf(2, 'Org1.member', 'Org2.member')"' as an argument for '-P' flag on line 85.
+
+
+### Performance Modelling (Folder Structure):
+- This folder contains the code used to model the performance. The folders not mentioned in thes section, but existing in the repository are the ones which were either not used in the thesis or are only for supporting the networks implementations.
+- '/Performance Modelling/bin/' folder contains binaries used for the all networks
+- '/Performance Modelling/chaincode/fabcar' folder contains chaincode in 4 languages, Java, GoLang, Javascript and Typescript. There is another additional folder for 'javascript-low-level' which was not used at all during the thesis.
+- '/Performance Modelling/Backup Implementations/' folder contains some networks and clients developed for the thesis but could not run due to limited hardware constraints such as RAM.
+- There are 2 folders for each network type, a network folder to run Hyperledger Fabric network and a client folder to interact with the client. Following are the networks and clients discussed in detail.
+
+- ' /Performance Modelling/8-peer-fabcar' consists of client for 10 peer network(8 peers for org1 + 2 peers for org2)/ '/Performance Modelling/8-peers-network/' consists of the network code for respective architecture.
+- '/Performance Modelling/fabcar/' consists of client for 2 organizations with solo orderer with 2 peers each. /Performance Modelling/first-network/' consists of the network code for respective architecture.
+- '/Performance Modelling/fabcar-four-org/' consists of client for 4 organizations with solo orderer with 2 peers each for org 1 and 2, where as 1 orderer for org 3 and 4. /Performance Modelling/four-org-network/' consists of the network code for respective architecture.
+- '/Performance Modelling/fabcar-kafka/' consists of client for 2 organizations with 2 peers each and with Kafka orderering service with one orderer. '/Performance Modelling/fabric-kafka/' consists of the network code for respective architecture.
+- '/Performance Modelling/fabcar-raft/' consists of client for 2 organizations with 2 peers each and with Raft orderering service with seven orderer. '/Performance Modelling/first-network-raft/' consists of the network code for respective architecture.
+- '/Performance Modelling/fabcar-three-org/' consists of client for 3 organizations with 2 peers each and with solo orderer. '/Performance Modelling/three-org-network/' consists of the network code for respective architecture.
