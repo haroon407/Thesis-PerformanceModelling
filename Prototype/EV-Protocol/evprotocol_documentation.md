@@ -55,3 +55,8 @@ Description: This function takes the index of cp and an amount to be added in it
 13. Function Name: subtractCPBalance(CPNumber, balance)
 Function Argument: CPNumber: string, balance: number
 Description: This function takes the index of cp and an amount to be subtracted in its account. for e.g changeCPName('CP1', 500), it will subtract 500 from the balance of CP1.
+
+14. Function Name: createEVComplexity(evNumber, manufacturer, model, color, chargingLevel, connector, owner, postalCode, city, n, option)
+Function Argument: evNumber: string, manufacturer: string, model: string, color: string, chargingLevel: string, connector: string, owner: string, postalCode: number, city: string,
+n: string, option: string
+Description: This function takes the index and remaining data to create an ev. In addition it takes 2 more arguments, n and option. It is to execute the complexity function. the value of n denotes the length of the array and can be any one from [1,2,5,8,10,11]. option can be either 1 or 2. if option is 1, it will execute the time complexity O(2^n), if option is 2, it will calculate time complexity O(n!).
