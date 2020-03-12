@@ -274,8 +274,6 @@ class FabCar extends Contract {
         // this.getComplexityFunctionExecuted(n, option);
         // let result = ComplexityFunctions.getLastElement(DummyData.numbers10);
         // let result2 = ComplexityFunctions.findIndex(DummyData.numbers10, 1503);
-        // console.log("O(1) - ", result);
-        // console.log("O(n) - ", result2);
 
         const allResults = [];
         while (true) {
@@ -295,9 +293,7 @@ class FabCar extends Contract {
                 allResults.push({ Key, Record });
             }
             if (res.done) {
-                // console.log('end of data');
                 await iterator.close();
-                // console.info(allResults);
                 return JSON.stringify(allResults);
             }
         }
