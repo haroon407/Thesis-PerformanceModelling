@@ -48,7 +48,6 @@ async function main() {
         console.log('Transaction has been completed in : ' + moment(timeEnd).diff(moment(timeStart)));
         // const result = await contract.evaluateTransaction('queryCar', 'CAR12');
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);

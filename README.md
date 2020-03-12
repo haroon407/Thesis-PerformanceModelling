@@ -104,6 +104,6 @@ To change endorsement policy for nOutOf expression, within the same file and lin
 3. Execute `rm -rf wallet` to remove any previous user keys stored in wallet
 4. Execute `node enrollAdmin.js` to enroll the admin on the network
 5. Execute `node registerUser.js` to register the user on the network
-6. Execute `node query.js` to query the chaincode 'queryAllCars' function with argument for complexity function '10' and '1' 
+6. Execute `node query.js` to query the chaincode 'queryCar' function with argument for 'Car6' 
 7. Execute `node invoke.js` to create 10 random Cars.
 8. The chaincode function and arguments details can be seen in the '/Performance Modelling/fabcar_documentation.md' and therefore the query.js or invoke.js can be updated accordingly to execute required chaincode function with respective parameters.
