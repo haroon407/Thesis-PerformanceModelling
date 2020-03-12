@@ -83,9 +83,9 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	// query createEVComplexity - arg: evNumber: string, Manufacturer: string, Model: string, Color: string, ChargingLevel: string, Connector: string, Owner: string, postalCode: int, city: string, n: string, option: string 
 	// query queryAllEVs - arg: n string, option string
 	// query changeEVLocation - arg: evNumber: string, newPostalCode: string, newCity: string
-	// query createCP - arg: CPNumber: string, name: string, balance: string
+	// query createCP - arg: CPNumber: string, name: string, balance: int
 	// query addCPBalance - arg: CPNumber: string, amount: int
-	// query subtractCPBalance - arg: CPNumber: string, amount: string
+	// query subtractCPBalance - arg: CPNumber: string, amount: int
 	if function == "queryEV" {
 		return s.queryEV(APIstub, args)
 	} else if function == "queryEVWithLocation" { 

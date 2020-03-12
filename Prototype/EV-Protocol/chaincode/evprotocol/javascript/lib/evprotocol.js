@@ -146,18 +146,11 @@ class EVProtocol extends Contract {
     }
 
     // for complexity functions add arguments n, option
-    async queryAllEVs(ctx, n, option) {
+    async queryAllEVs(ctx) {
         const keyStart = 'EV0';
         const keyEnd = 'EV9999';
 
         const iterator = await ctx.stub.getStateByRange(keyStart, keyEnd);
-
-        // Execute complexity function
-        // this.getComplexityFunctionExecuted(n, option);
-        // let result = ComplexityFunctions.getLastElement(DummyData.numbers10);
-        // let result2 = ComplexityFunctions.findIndex(DummyData.numbers10, 1503);
-        // console.log("O(1) - ", result);
-        // console.log("O(n) - ", result2);
 
         const allResults = [];
         while (true) {
